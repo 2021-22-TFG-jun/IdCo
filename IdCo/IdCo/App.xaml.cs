@@ -11,7 +11,12 @@ namespace IdCo
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new StartPage());
+            // Nuevo estilo de navegabilidad, desplazar vistas de izq - der y der - izq
+            CarouselPage carousel = new CarouselPage();
+            carousel.Children.Add(new StartPage());
+            carousel.Children.Add(new PersonPage());
+
+            MainPage = new NavigationPage(carousel);
         }
 
         protected override void OnStart()
