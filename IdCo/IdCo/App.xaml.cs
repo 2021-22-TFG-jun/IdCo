@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using IdCo.Views;
 
 namespace IdCo
 {
@@ -10,7 +11,7 @@ namespace IdCo
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new StartPage());
         }
 
         protected override void OnStart()
