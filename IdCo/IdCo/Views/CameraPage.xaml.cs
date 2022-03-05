@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using IdCo.Services.Camera;
 using Plugin.Media.Abstractions;
@@ -8,17 +9,28 @@ namespace IdCo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CameraPage : ContentPage
     {
+
         ICameraService camera;
+
+        /// <summary>
+        /// Inicializar el servicio de la camara
+        /// </summary>
         public CameraPage()
         {
             InitializeComponent();
             camera = new CameraService();
         }
 
-        private async void CameraBtn_Clicked(object sender, System.EventArgs e)
+        /// <summary>
+        /// Acceder a la camara, sacar foto y mandar la foto a otra ventana
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void CameraBtn_Clicked(object sender, EventArgs e)
         {
             StoreCameraMediaOptions options = camera.StoreCameraOptions();
             MediaFile photo = await camera.TakePhoto(options);
+            //TODO: Mandar foto a la ventana PersonPage
             await Navigation.PushAsync(new PersonPage());
         }
     }
