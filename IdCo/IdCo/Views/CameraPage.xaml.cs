@@ -30,8 +30,8 @@ namespace IdCo.Views
         {
             StoreCameraMediaOptions options = camera.StoreCameraOptions();
             MediaFile photo = await camera.TakePhoto(options);
-            //TODO: Mandar foto a la ventana PersonPage
-            await Navigation.PushAsync(new PersonPage());
+
+            await Navigation.PushAsync(new PersonPage(photo));
         }
     }
 }
