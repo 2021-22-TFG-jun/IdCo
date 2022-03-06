@@ -14,6 +14,21 @@ namespace IdCo.Views
             InitializeComponent();
             this.photo = photo;
 
+            PhotoImg.Source = ImageSource.FromStream(() =>
+            {
+                var stream = photo.GetStream();
+                return stream;
+            });
+        }
+
+        private void AspaBtn_Clicked(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void TickBtn_Clicked(object sender, System.EventArgs e)
+        {
+
         }
     }
 }

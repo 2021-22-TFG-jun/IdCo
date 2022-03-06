@@ -4,7 +4,30 @@
              x:Class="IdCo.Views.PersonPage"
              Title="Añadir nueva persona">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2196F3">
+        <StackLayout BackgroundColor="#2196F3" Padding="20,0,20,0" Spacing="20" Orientation="Vertical">
+            <Image x:Name="PhotoImg"
+                   WidthRequest="250"
+                   HeightRequest="250"/>
+            <Entry x:Name="NameEntry"
+                   Placeholder="Nombre"
+                   TextColor="AliceBlue"
+                   FontSize="20"/>
+            <Entry x:Name="LastNameEntry"
+                   Placeholder="Apellidos"
+                   TextColor="AliceBlue"
+                   FontSize="20"/>
+
+            <StackLayout  BackgroundColor="#2196F3" Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                <ImageButton x:Name="AspaBtn" Source="aspa150x150.png" 
+                             Clicked="AspaBtn_Clicked"
+                             VerticalOptions="Start" 
+                             HorizontalOptions="Start"/>
+                <ImageButton x:Name="TickBtn" Source="tick150x150.png" 
+                             Clicked="TickBtn_Clicked"
+                             VerticalOptions="EndAndExpand" 
+                             HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+
         </StackLayout>
     </ContentPage.Content>
 
