@@ -37,6 +37,5 @@
 
   <ItemGroup>
     <Folder Include="Models\Database\" />
-    <Folder Include="Models\Person\" />
   </ItemGroup>
 </Project>
