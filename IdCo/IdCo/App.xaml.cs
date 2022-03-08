@@ -20,7 +20,11 @@ namespace IdCo
                 if (database == null)
                 {
                     database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PersonDB.db3"));
+                    
                 }
+                //TODO: Descomentar para reiniciar la tabla Person en BD
+                database.DropTable();
+                database.CreateTable();
                 return (Database)database;
             }
         }
