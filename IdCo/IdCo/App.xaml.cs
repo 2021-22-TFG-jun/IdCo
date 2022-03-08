@@ -1,12 +1,29 @@
 ﻿using System;
+using System.IO;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+
 using IdCo.Views;
+using IdCo.Models.Database;
 
 namespace IdCo
 {
     public partial class App : Application
     {
+        static IDatabase database;
+        /// <summary>
+        /// Inicializar la Base de Datos sino existe.
+        /// </summary>
+        public static Database Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PersonDB.db3"));
+                }
+                return (Database)database;
+            }
+        }
         public App()
         {
             InitializeComponent();
