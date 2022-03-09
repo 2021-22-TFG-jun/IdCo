@@ -36,6 +36,7 @@ namespace IdCo
             CarouselPage carousel = new CarouselPage();
             carousel.Children.Add(new StartPage());
             carousel.Children.Add(new CameraPage());
+            carousel.Children.Add(new StartSearchPage());
 
             MainPage = new NavigationPage(carousel);
         }
