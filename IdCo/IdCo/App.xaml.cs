@@ -9,7 +9,7 @@ namespace IdCo
 {
     public partial class App : Application
     {
-        static IDatabase database;
+        static Database database;
         /// <summary>
         /// Inicializar la Base de Datos sino existe.
         /// </summary>
@@ -23,9 +23,9 @@ namespace IdCo
                     
                 }
                 //TODO: Descomentar para reiniciar la tabla Person en BD
-                database.DropTable();
+                //database.DropTable();
                 database.CreateTable();
-                return (Database)database;
+                return database;
             }
         }
         public App()
