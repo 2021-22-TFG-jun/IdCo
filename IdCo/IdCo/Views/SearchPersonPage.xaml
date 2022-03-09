@@ -4,8 +4,39 @@
              x:Class="IdCo.Views.SearchPersonPage"
              Title="Búsqueda de personas">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2196F3">
-
+        <StackLayout BackgroundColor="#2196F3" Padding="20,0,20,0" Spacing="20" Orientation="Vertical">
+            <Entry x:Name="NameEntry"
+                   Placeholder="Introduce el nombre"
+                   TextColor="AliceBlue"
+                   FontSize="20"/>
+            <Entry x:Name="LastNameEntry"
+                   Placeholder="Introduce el apellido"
+                   TextColor="AliceBlue"
+                   FontSize="20"/>
+            
+            <Image x:Name="PhotoBD"
+                   WidthRequest="250"
+                   HeightRequest="250"
+                   IsVisible="false"/>
+            
+            <StackLayout x:Name="FirstStack" BackgroundColor="#2196F3" Padding="0,0,0,0" VerticalOptions="EndAndExpand" IsVisible="true">
+                <ImageButton x:Name="SearchBtn" Source="lupa480x150.png" 
+                             Clicked="SearchBtn_Clicked"
+                             VerticalOptions="EndAndExpand" 
+                             HorizontalOptions="EndAndExpand"
+                             IsVisible="true"/>
+            </StackLayout>
+            
+            <StackLayout x:Name="SecondStack" BackgroundColor="#2196F3" Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand" IsVisible="false">
+                <ImageButton x:Name="BackBtn" Source="back150x150.png" 
+                             Clicked="BackBtn_Clicked"
+                             VerticalOptions="Start" 
+                             HorizontalOptions="Start"/>
+                <ImageButton x:Name="TrashBtn" Source="Trash150x150.png" 
+                             Clicked="TrashBtn_Clicked"
+                             VerticalOptions="EndAndExpand" 
+                             HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
