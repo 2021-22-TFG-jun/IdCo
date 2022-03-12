@@ -42,5 +42,18 @@
         /// <param name="name"></param>
         /// <returns></returns>
         Person.Person SearchPersonByName(string name);
+        /// <summary>
+        /// Buscar una persona en funcion de su apellido.
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
+        Person.Person SearchPersonByLastName(string lastName);
+        /// <summary>
+        /// Buscar una person en función de su nombre y su apellido.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
+        Person.Person SearchPersonByNameAndLastName(string name, string lastName);
     }
 }
