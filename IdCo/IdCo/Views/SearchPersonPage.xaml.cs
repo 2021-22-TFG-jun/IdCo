@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,15 +11,20 @@ namespace IdCo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SearchPersonPage : ContentPage
     {
+        Person person = null;
         public SearchPersonPage()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Buscar una persona en la BD, por su nombre y/o apellido.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void SearchBtn_Clicked(object sender, EventArgs e)
         {
             string name = NameEntry.Text;
-            Person person = null;
 
             try
             {
@@ -49,16 +51,26 @@ namespace IdCo.Views
                 await DisplayAlert("Error", $"No existe ningún registro con el Nombre \"{name}\"", "OK");
             }
         }
-
+        /// <summary>
+        /// Eliminar un objeto Person anteriormente buscado de la BD permanentemente.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void TrashBtn_Clicked(object sender, EventArgs e)
         {
+            App.Database.RemovePerson(person);
+
             NameEntry.Text = string.Empty;
             LastNameEntry.Text = string.Empty;
             PhotoBD.Source = null;
 
             await Navigation.PopAsync();
         }
-
+        /// <summary>
+        /// Volver a la ventana anterior sin realizar ningún tipo de cambio
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void BackBtn_Clicked(object sender, EventArgs e)
         {
             NameEntry.Text = string.Empty;
