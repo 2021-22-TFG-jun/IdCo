@@ -15,7 +15,7 @@ namespace IdCo.Models.Face
         /// <summary>
         /// Dimensiones del rectangulo que indica la posición de la cara detectada
         /// </summary>
-        public FaceRectagle FaceRectagle { get; set; }
+        public FaceRectangle FaceRectangle { get; set; }
         /// <summary>
         /// Candidatos identificados para un rostro.
         /// </summary>
