@@ -77,5 +77,17 @@ namespace IdCo.Models.Database
             Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.Name == name).FirstOrDefaultAsync();
             return person.Result;
         }
+
+        public Person.Person SearchPersonByLastName(string lastName)
+        {
+            Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.LastName == lastName).FirstOrDefaultAsync();
+            return person.Result;
+        }
+
+        public Person.Person SearchPersonByNameAndLastName(string name, string lastName)
+        {
+            Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.Name == name).Where(y => y.LastName == lastName).FirstOrDefaultAsync();            
+            return person.Result;
+        }
     }
 }
