@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 using IdCo.Views;
 using IdCo.Models.Database;
+using IdCo.Helpers;
 
 namespace IdCo
 {
@@ -19,7 +20,7 @@ namespace IdCo
             {
                 if (database == null)
                 {
-                    database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PersonDB.db3"));
+                    database = new Database(Settings.BDName);
                     
                 }
                 //TODO: Descomentar para reiniciar la tabla Person en BD
