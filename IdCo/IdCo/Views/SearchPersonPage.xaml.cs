@@ -25,13 +25,25 @@ namespace IdCo.Views
         private async void SearchBtn_Clicked(object sender, EventArgs e)
         {
             string name = NameEntry.Text;
+            string lastName = LastNameEntry.Text;
 
             try
             {
-                //TODO: Validar el apellido en la BD
-                if (!string.IsNullOrEmpty(name))
+                if (!string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(lastName))
                 {
-                    person = App.Database.SearchPersonByName(name);
+                    if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(lastName))
+                    {
+                        person = App.Database.SearchPersonByNameAndLastName(name, lastName);
+                    }
+                    else if(!string.IsNullOrEmpty(name))
+                    {
+                        person = App.Database.SearchPersonByName(name);
+                    }
+                    else
+                    {
+                        person = App.Database.SearchPersonByLastName(lastName);
+                    }
+                        
                     byte[] photo = person.Photo;
                     MemoryStream memoryStream = new MemoryStream(photo);
                     Image image = new Image { Source = ImageSource.FromStream(() => memoryStream) };
@@ -48,7 +60,7 @@ namespace IdCo.Views
             }
             catch
             {
-                await DisplayAlert("Error", $"No existe ningún registro con el Nombre \"{name}\"", "OK");
+                await DisplayAlert("Error", $"No existe ningún registro para los criterios de búqueda introducidos", "OK");
             }
         }
         /// <summary>
