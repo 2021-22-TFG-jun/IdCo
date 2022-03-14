@@ -11,7 +11,7 @@ namespace IdCo.Models.Face
         /// <summary>
         /// Identifador del rostro.
         /// </summary>
-        public Guid FaceId { get; set; }
+        public Guid PersistedFaceId { get; set; }
         /// <summary>
         /// Dimensiones del rectangulo que indica la posición de la cara detectada
         /// </summary>
