@@ -6,13 +6,16 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using IdCo.Models.Person;
+using IdCo.Services.Face;
 
 namespace IdCo.Views
-{
+{ 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PersonPage : ContentPage
     {
         MediaFile photo;
+        PersonGroupPersonService personGroupPersonService;
+
         public PersonPage(MediaFile photo)
         {
             InitializeComponent();
@@ -23,6 +26,8 @@ namespace IdCo.Views
                 var stream = photo.GetStream();
                 return stream;
             });
+
+            personGroupPersonService = new PersonGroupPersonService();
         }
         /// <summary>
         /// Convertir un stream a byte array.
@@ -70,6 +75,11 @@ namespace IdCo.Views
                     };
 
                     App.Database.SavePerson(person);
+                    var personId = await personGroupPersonService.Create(NameEntry.Text, LastNameEntry.Text);
+
+                    var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
+
+                    //TODO: Guardar los identificadores en la BD local
                 }
 
             }
