@@ -12,7 +12,7 @@ namespace IdCo.Services.Face
         /// <param name="name">Nombre del Person</param>
         /// <param name="userData">Datos adicionales del Person</param>
         /// <returns>200 OK: personId de la Person creada</returns>
-        Task<string> Create(string personGroupId, string name, string userData);
+        Task<Models.Face.Face> Create(string personGroupId, string name, string userData);
         /// <summary>
         /// Añadir un face a un Person ya creado.
         /// </summary>
@@ -21,7 +21,7 @@ namespace IdCo.Services.Face
         /// <param name="personGroupId">Id del PersonGroup</param>
         /// <param name="detectionModel">Modelo de detección a usar</param>
         /// <returns>200 OK: persistedFaceId, id del rostro añadido</returns>
-        Task<string> AddFace(string personId, Stream photo, string personGroupId, string detectionModel);
+        Task<Models.Face.Face> AddFace(string personId, Stream photo, string personGroupId, string detectionModel);
         /// <summary>
         /// Eliminar un Person de un PersonGroup.
         /// </summary>
