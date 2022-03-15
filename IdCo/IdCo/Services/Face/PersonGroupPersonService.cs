@@ -23,14 +23,26 @@ namespace IdCo.Services.Face
         /// </summary>
         public string UserData { get; set; }
     }
+
     public class PersonGroupPersonService : IPersonGroupPersonService
     {
         HttpClient httpClient;
+        /// <summary>
+        /// Inicializar el servicio.
+        /// </summary>
         public PersonGroupPersonService()
         {
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Settings.FaceApiKey);
         }
+        /// <summary>
+        /// Añadir un face a un Person ya creado.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="photo"></param>
+        /// <param name="personGroupId"></param>
+        /// <param name="detectionModel"></param>
+        /// <returns></returns>
         public async Task<Models.Face.Face> AddFace(string personId, Stream photo, string personGroupId = null,  string detectionModel = null)
         {
             if (personGroupId == null)
@@ -61,7 +73,13 @@ namespace IdCo.Services.Face
                 return default(Models.Face.Face);
             }
         }
-
+        /// <summary>
+        /// Crear un Person en un PersonGroup.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="userData"></param>
+        /// <param name="personGroupId"></param>
+        /// <returns></returns>
         public async Task<Models.Face.Face> Create(string name, string userData, string personGroupId = null)
         {
             if (personGroupId == null)
@@ -97,7 +115,12 @@ namespace IdCo.Services.Face
             }
 
         }
-
+        /// <summary>
+        /// Eliminar un Person de un PersonGroup.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="personGroupId"></param>
+        /// <returns></returns>
         public async Task<string> Delete(string personId, string personGroupId = null)
         {
             if (personGroupId == null)
@@ -111,7 +134,13 @@ namespace IdCo.Services.Face
 
             return httpResponseMessage.StatusCode.ToString();
         }
-
+        /// <summary>
+        /// Eliminar un rostro de un Person.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="faceId"></param>
+        /// <param name="personGroupId"></param>
+        /// <returns></returns>
         public async Task<string> DeleteFace(string personId, string faceId, string personGroupId = null)
         {
             if (personGroupId == null)
