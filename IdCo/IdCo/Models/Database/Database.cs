@@ -77,16 +77,45 @@ namespace IdCo.Models.Database
             Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.Name == name).FirstOrDefaultAsync();
             return person.Result;
         }
-
+        /// <summary>
+        /// Buscar una persona en funcion de su apellido.
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
         public Person.Person SearchPersonByLastName(string lastName)
         {
             Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.LastName == lastName).FirstOrDefaultAsync();
             return person.Result;
         }
-
+        /// <summary>
+        /// Buscar una person en función de su nombre y su apellido.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="lastName"></param>
+        /// <returns></returns>
         public Person.Person SearchPersonByNameAndLastName(string name, string lastName)
         {
             Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.Name == name).Where(y => y.LastName == lastName).FirstOrDefaultAsync();            
+            return person.Result;
+        }
+        /// <summary>
+        /// Buscar un objeto Person por su PersonId.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
+        public Person.Person SearchPersonByPersonId(string personId)
+        {
+            Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.PersonId == personId).FirstOrDefaultAsync();
+            return person.Result;
+        }
+        /// <summary>
+        /// Buscar un objeto Person por su FaceId.
+        /// </summary>
+        /// <param name="faceId"></param>
+        /// <returns></returns>
+        public Person.Person SearchPersonByFaceId(string faceId)
+        {
+            Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.FaceId == faceId).FirstOrDefaultAsync();
             return person.Result;
         }
     }

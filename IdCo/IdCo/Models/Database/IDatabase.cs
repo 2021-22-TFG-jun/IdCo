@@ -55,5 +55,17 @@
         /// <param name="lastName"></param>
         /// <returns></returns>
         Person.Person SearchPersonByNameAndLastName(string name, string lastName);
+        /// <summary>
+        /// Buscar un objeto Person por su PersonId.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
+        Person.Person SearchPersonByPersonId(string personId);
+        /// <summary>
+        /// Buscar un objeto Person por su FaceId.
+        /// </summary>
+        /// <param name="faceId"></param>
+        /// <returns></returns>
+        Person.Person SearchPersonByFaceId(string faceId);
     }
 }
