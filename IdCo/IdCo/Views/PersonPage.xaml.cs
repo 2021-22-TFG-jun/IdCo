@@ -67,19 +67,19 @@ namespace IdCo.Views
                 if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
                 {
                     byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
+                    var personId = await personGroupPersonService.Create(NameEntry.Text, LastNameEntry.Text);
+                    var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
+
                     Person person = new Person
                     {
                         Name = NameEntry.Text,
+                        PersonId = personId.PersonId.ToString(),
+                        FaceId = faceId.PersistedFaceId.ToString(),
                         LastName = LastNameEntry.Text,
                         Photo = photoByte
                     };
 
                     App.Database.SavePerson(person);
-                    var personId = await personGroupPersonService.Create(NameEntry.Text, LastNameEntry.Text);
-
-                    var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
-
-                    //TODO: Guardar los identificadores en la BD local
                 }
 
             }
