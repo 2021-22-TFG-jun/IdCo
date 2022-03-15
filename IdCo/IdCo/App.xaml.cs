@@ -5,12 +5,15 @@ using Xamarin.Forms;
 using IdCo.Views;
 using IdCo.Models.Database;
 using IdCo.Helpers;
+using IdCo.Services.Face;
 
 namespace IdCo
 {
     public partial class App : Application
     {
         static Database database;
+        PersonGroupService personGroupService;
+
         /// <summary>
         /// Inicializar la Base de Datos sino existe.
         /// </summary>
@@ -32,6 +35,11 @@ namespace IdCo
         public App()
         {
             InitializeComponent();
+
+            personGroupService = new PersonGroupService();
+            //TODO: Descomentar para eliminar el recurso del API (reiniciarlo)
+            //personGroupService.Delete();
+            personGroupService.Create();
 
             // Nuevo estilo de navegabilidad, desplazar vistas de izq - der y der - izq
             CarouselPage carousel = new CarouselPage();
