@@ -6,15 +6,19 @@ using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using IdCo.Services.Face;
+
 namespace IdCo.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SearchPersonPage : ContentPage
     {
         Person person = null;
+        PersonGroupPersonService personGroupPersonService;
         public SearchPersonPage()
         {
             InitializeComponent();
+            personGroupPersonService = new PersonGroupPersonService();
         }
 
         /// <summary>
@@ -71,6 +75,7 @@ namespace IdCo.Views
         private async void TrashBtn_Clicked(object sender, EventArgs e)
         {
             App.Database.RemovePerson(person);
+            await personGroupPersonService.Delete(person.PersonId);
 
             NameEntry.Text = string.Empty;
             LastNameEntry.Text = string.Empty;
