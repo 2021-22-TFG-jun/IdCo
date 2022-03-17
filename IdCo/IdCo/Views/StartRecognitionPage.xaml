@@ -4,7 +4,9 @@
              x:Class="IdCo.Views.StartRecognitionPage">
     <ContentPage.Content>
         <StackLayout BackgroundColor="#2196F3">
-
+            <ImageButton x:Name="PlayBtn"
+                         Source="play480x720"
+                         Clicked="PlayBtn_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

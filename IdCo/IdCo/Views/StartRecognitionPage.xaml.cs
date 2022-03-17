@@ -16,5 +16,10 @@ namespace IdCo.Views
         {
             InitializeComponent();
         }
+
+        private void PlayBtn_Clicked(object sender, EventArgs e)
+        {
+
+        }
     }
 }
