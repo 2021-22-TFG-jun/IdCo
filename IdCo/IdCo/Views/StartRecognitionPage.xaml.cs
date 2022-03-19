@@ -17,9 +17,9 @@ namespace IdCo.Views
             InitializeComponent();
         }
 
-        private void PlayBtn_Clicked(object sender, EventArgs e)
+        private async void PlayBtn_Clicked(object sender, EventArgs e)
         {
-
+            await Navigation.PushAsync(new RecognitionPage());
         }
     }
 }
