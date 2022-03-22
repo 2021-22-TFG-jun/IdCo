@@ -9,6 +9,10 @@ namespace IdCo.Models.Face
         /// </summary>
         public Guid PersonId { get; set; }
         /// <summary>
+        /// Identificador de rostro no persistente
+        /// </summary>
+        public Guid FaceId { get; set; }
+        /// <summary>
         /// Identifador del rostro.
         /// </summary>
         public Guid PersistedFaceId { get; set; }
