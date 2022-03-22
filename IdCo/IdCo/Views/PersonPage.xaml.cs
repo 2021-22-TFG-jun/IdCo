@@ -7,6 +7,8 @@ using Xamarin.Forms.Xaml;
 
 using IdCo.Models.Person;
 using IdCo.Services.Face;
+using IdCo.Models.Face;
+using System.Linq;
 
 namespace IdCo.Views
 { 
@@ -15,6 +17,8 @@ namespace IdCo.Views
     {
         MediaFile photo;
         PersonGroupPersonService personGroupPersonService;
+        FaceService faceService;
+        PersonGroupService personGroupService;
 
         public PersonPage(MediaFile photo)
         {
@@ -28,6 +32,8 @@ namespace IdCo.Views
             });
 
             personGroupPersonService = new PersonGroupPersonService();
+            faceService = new FaceService();
+            personGroupService = new PersonGroupService();
         }
         /// <summary>
         /// Convertir un stream a byte array.
@@ -62,26 +68,36 @@ namespace IdCo.Views
         /// <param name="e"></param>
         private async void TickBtn_Clicked(object sender, EventArgs e)
         {
+            
             try
             {
-                if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
+                Face[] detectFaces = await faceService.Detect(true, photo.GetStream());
+                if (detectFaces.Any())
                 {
-                    byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
-                    var personId = await personGroupPersonService.Create(NameEntry.Text, LastNameEntry.Text);
-                    var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
-
-                    Person person = new Person
+                    if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
                     {
-                        Name = NameEntry.Text,
-                        PersonId = personId.PersonId.ToString(),
-                        FaceId = faceId.PersistedFaceId.ToString(),
-                        LastName = LastNameEntry.Text,
-                        Photo = photoByte
-                    };
+                        byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
+                        var personId = await personGroupPersonService.Create(NameEntry.Text, LastNameEntry.Text);
+                        var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
 
-                    App.Database.SavePerson(person);
+                        Person person = new Person
+                        {
+                            Name = NameEntry.Text,
+                            PersonId = personId.PersonId.ToString(),
+                            FaceId = faceId.PersistedFaceId.ToString(),
+                            LastName = LastNameEntry.Text,
+                            Photo = photoByte
+                        };
+
+                        App.Database.SavePerson(person);
+
+                        await personGroupService.Train();
+                    }
                 }
-
+                else
+                {
+                    Console.WriteLine("No se ha detectado ningun rostro");
+                }
             }
             catch (Exception ex)
             {
