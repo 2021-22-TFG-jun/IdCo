@@ -21,7 +21,7 @@ namespace IdCo.Services.Face
         /// <summary>
         /// Identificadores de los rostros.
         /// </summary>
-        public Guid[] FaceIds { get; set; }
+        public string[] FaceIds { get; set; }
         /// <summary>
         /// Numero maximo de posibles candidatos devueltos.
         /// </summary>
@@ -83,24 +83,34 @@ namespace IdCo.Services.Face
         /// <param name="maxNumOfCandidates"></param>
         /// <param name="confidenceThreshold"></param>
         /// <returns></returns>
-        public async Task<Models.Face.Face[]> Identify(Guid[] facesIds, string personGroupId, int maxNumOfCandidates, double confidenceThreshold)
+        public async Task<Models.Face.Face[]> Identify(Guid[] facesIds, string personGroupId = null, int maxNumOfCandidates = 1, double confidenceThreshold = 0.5)
         {
+            if (personGroupId == null)
+                personGroupId = Settings.FaceGroupID;
             var request = $"{Settings.FaceEndPoint}/identify";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
 
             requestMessage.RequestUri = new Uri(request);
 
+            string[] f_id = new string[facesIds.Length];
+            int i = 0;
+            foreach (Guid id in facesIds)
+            {
+                f_id[i] = id.ToString();
+                i = i + 1;
+            }
+
             FaceRequestJson requestBody = new FaceRequestJson
             {
-                PersonGroupId = Settings.FaceGroupID,
-                FaceIds = facesIds,
+                PersonGroupId = personGroupId,
+                FaceIds = f_id,
                 MaxNumOfCandidatesReturned = maxNumOfCandidates,
                 ConfidenceThreshold = confidenceThreshold
             };
 
-            var jsonBody = JsonConvert.SerializeObject(requestBody, Formatting.Indented);
+            var jsonBody = JsonConvert.SerializeObject(requestBody);
 
-            requestMessage.Content = new StringContent(jsonBody as string);
+            requestMessage.Content = new StringContent(jsonBody);
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
