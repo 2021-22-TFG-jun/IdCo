@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
+using Xamarin.Forms;
 
 namespace IdCo.Helpers
 {
     public class Settings
     {
-        public static string Resource = ""; // Nombre de tu recurso
-        public static readonly string FaceEndPoint = "https://"+Resource+ ".cognitiveservices.azure.com/face/v1.0";
-        public static string FaceApiKey = ""; // Clave de acceso al recurso
+        public static string Resource = Application.Current.Properties["ResourceName"].ToString(); // Nombre de tu recurso
+        public static readonly string FaceEndPoint = "https://"+ Resource + ".cognitiveservices.azure.com/face/v1.0";
+        public static string FaceApiKey = Application.Current.Properties["ResourceKey"].ToString(); // Clave de acceso al recurso
 
-        public static readonly string FaceGroupID = "Conocidos";
+        public static readonly string FaceGroupID = "conocidos";
         public static readonly string FaceGroupName = "Mis Personas Conocidas";
         public static readonly string FaceGroupDescription = "Agrupación de los rostros de mis personas conocidas";
 
