@@ -12,8 +12,6 @@ namespace IdCo
     public partial class App : Application
     {
         static Database database;
-        PersonGroupService personGroupService;
-
         /// <summary>
         /// Inicializar la Base de Datos sino existe.
         /// </summary>
@@ -32,19 +30,17 @@ namespace IdCo
                 return database;
             }
         }
+
         public App()
         {
             InitializeComponent();
 
-            personGroupService = new PersonGroupService();
-            //TODO: Descomentar para eliminar el recurso del API (reiniciarlo)
-            //personGroupService.Delete();
-            personGroupService.Create();
-
             // Nuevo estilo de navegabilidad, desplazar vistas de izq - der y der - izq
             CarouselPage carousel = new CarouselPage();
+
             carousel.Children.Add(new StartPage());
             carousel.Children.Add(new StartRecognitionPage());
+            //carousel.Children.Add(new RecognitionPage());
             carousel.Children.Add(new CameraPage());
             carousel.Children.Add(new StartSearchPage());
 
