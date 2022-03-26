@@ -37,15 +37,15 @@ namespace IdCo.Views
                 {
                     if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(lastName))
                     {
-                        person = App.Database.SearchPersonByNameAndLastName(name, lastName);
+                        person = App.Database.SearchPersonByNameAndLastName(name.Trim().ToLower(), lastName.Trim().ToLower());
                     }
                     else if(!string.IsNullOrEmpty(name))
                     {
-                        person = App.Database.SearchPersonByName(name);
+                        person = App.Database.SearchPersonByName(name.Trim().ToLower());
                     }
                     else
                     {
-                        person = App.Database.SearchPersonByLastName(lastName);
+                        person = App.Database.SearchPersonByLastName(lastName.Trim().ToLower());
                     }
                         
                     byte[] photo = person.Photo;
