@@ -76,22 +76,31 @@ namespace IdCo.Views
                 {
                     if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
                     {
+                        string name = NameEntry.Text;
+                        string lowerName = name.Trim().ToLower();
+                        string lastName = LastNameEntry.Text;
+                        string lowerLastName = lastName.Trim().ToLower();
+                        
                         byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
-                        var personId = await personGroupPersonService.Create(NameEntry.Text, LastNameEntry.Text);
+                        var personId = await personGroupPersonService.Create(lowerName, lowerLastName);
                         var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
 
                         Person person = new Person
                         {
-                            Name = NameEntry.Text,
+                            Name = lowerName,
                             PersonId = personId.PersonId.ToString(),
                             FaceId = faceId.PersistedFaceId.ToString(),
-                            LastName = LastNameEntry.Text,
+                            LastName = lowerLastName,
                             Photo = photoByte
                         };
 
                         App.Database.SavePerson(person);
 
                         await personGroupService.Train();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error","Introduce el nombre y el apellido de la persona", "OK");
                     }
                 }
                 else
