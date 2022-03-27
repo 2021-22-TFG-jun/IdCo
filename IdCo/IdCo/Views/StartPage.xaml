@@ -12,7 +12,7 @@
                    TextColor="White"
                    HorizontalTextAlignment="Center"/>
             <StackLayout x:Name="LoginDataPanel" VerticalOptions="CenterAndExpand" Padding="20,0,20,0">
-                <Label x:Name="lbl_start"
+                <Label x:Name="lbl_login"
                    Text="Inicia sesión en el recurso para continuar"
                    VerticalOptions="CenterAndExpand" 
                    HorizontalOptions="CenterAndExpand" 
