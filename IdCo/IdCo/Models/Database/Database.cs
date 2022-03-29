@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace IdCo.Models.Database
@@ -68,35 +69,44 @@ namespace IdCo.Models.Database
             return person.Result;
         }
         /// <summary>
-        /// Buscar un objeto Person por su nombre.
+        /// Buscar un objeto Persona/as por su nombre.
         /// </summary>
         /// <param name="name">Name del objeto Person a buscar</param>
         /// <returns>Person buscada</returns>
-        public Person.Person SearchPersonByName(string name)
+        public List<Person.Person> SearchPersonByName(string name)
         {
-            Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.Name == name).FirstOrDefaultAsync();
-            return person.Result;
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name == name).ToListAsync();
+            return persons.Result;
         }
         /// <summary>
-        /// Buscar una persona en funcion de su apellido.
+        /// Buscar una persona/as en funcion de su apellido.
         /// </summary>
         /// <param name="lastName"></param>
         /// <returns></returns>
-        public Person.Person SearchPersonByLastName(string lastName)
+        public List<Person.Person> SearchPersonByLastName(string lastName)
         {
-            Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.LastName == lastName).FirstOrDefaultAsync();
-            return person.Result;
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.LastName == lastName).ToListAsync();
+            return persons.Result;
         }
         /// <summary>
-        /// Buscar una person en función de su nombre y su apellido.
+        /// Buscar una persona/as en función de su nombre y su apellido.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="lastName"></param>
         /// <returns></returns>
-        public Person.Person SearchPersonByNameAndLastName(string name, string lastName)
+        public List<Person.Person> SearchPersonByNameAndLastName(string name, string lastName)
         {
-            Task<Person.Person> person = database.Table<Person.Person>().Where(x => x.Name == name).Where(y => y.LastName == lastName).FirstOrDefaultAsync();            
-            return person.Result;
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name == name).Where(y => y.LastName == lastName).ToListAsync();            
+            return persons.Result;
+        }
+        /// <summary>
+        /// Obtener todos los registros Person de la Base de Datos.
+        /// </summary>
+        /// <returns></returns>
+        public List<Person.Person> SearchAllPersons()
+        {
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().ToListAsync();
+            return persons.Result;
         }
         /// <summary>
         /// Buscar un objeto Person por su PersonId.
