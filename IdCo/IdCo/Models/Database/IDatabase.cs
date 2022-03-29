@@ -1,4 +1,6 @@
-﻿namespace IdCo.Models.Database
+﻿using System.Collections.Generic;
+
+namespace IdCo.Models.Database
 {
     /// <summary>
     /// Interfaz para la Base de Datos.
@@ -37,24 +39,29 @@
         /// <returns></returns>
         Person.Person SearchPersonById(int id);
         /// <summary>
-        /// Buscar una persona en funcion de su nombre.
+        /// Buscar una persona/as en funcion de su nombre.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        Person.Person SearchPersonByName(string name);
+        List<Person.Person> SearchPersonByName(string name);
         /// <summary>
-        /// Buscar una persona en funcion de su apellido.
+        /// Buscar una persona/as en funcion de su apellido.
         /// </summary>
         /// <param name="lastName"></param>
         /// <returns></returns>
-        Person.Person SearchPersonByLastName(string lastName);
+        List<Person.Person> SearchPersonByLastName(string lastName);
         /// <summary>
-        /// Buscar una person en función de su nombre y su apellido.
+        /// Buscar una persona/as en función de su nombre y su apellido.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="lastName"></param>
         /// <returns></returns>
-        Person.Person SearchPersonByNameAndLastName(string name, string lastName);
+        List<Person.Person> SearchPersonByNameAndLastName(string name, string lastName);
+        /// <summary>
+        /// Buscar todas las personas que estan en la base de datos.
+        /// </summary>
+        /// <returns></returns>
+        List<Person.Person> SearchAllPersons();
         /// <summary>
         /// Buscar un objeto Person por su PersonId.
         /// </summary>
