@@ -13,7 +13,7 @@ namespace IdCo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SearchPersonPage : ContentPage
     {
-        Person person = null;
+        List<Person> persons = null;
         PersonGroupPersonService personGroupPersonService;
         public SearchPersonPage()
         {
@@ -37,17 +37,19 @@ namespace IdCo.Views
                 {
                     if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(lastName))
                     {
-                        person = App.Database.SearchPersonByNameAndLastName(name.Trim().ToLower(), lastName.Trim().ToLower());
+                        persons = App.Database.SearchPersonByNameAndLastName(name.Trim().ToLower(), lastName.Trim().ToLower());
                     }
                     else if(!string.IsNullOrEmpty(name))
                     {
-                        person = App.Database.SearchPersonByName(name.Trim().ToLower());
+                        persons = App.Database.SearchPersonByName(name.Trim().ToLower());
                     }
                     else
                     {
-                        person = App.Database.SearchPersonByLastName(lastName.Trim().ToLower());
+                        persons = App.Database.SearchPersonByLastName(lastName.Trim().ToLower());
                     }
-                        
+                    //TODO: Cambiar para el caso en que obtengan mas de un resultado
+                    Person person = persons[0];
+
                     byte[] photo = person.Photo;
                     MemoryStream memoryStream = new MemoryStream(photo);
                     Image image = new Image { Source = ImageSource.FromStream(() => memoryStream) };
@@ -74,6 +76,9 @@ namespace IdCo.Views
         /// <param name="e"></param>
         private async void TrashBtn_Clicked(object sender, EventArgs e)
         {
+            //TODO: Cambiar
+            Person person = persons[0];
+
             App.Database.RemovePerson(person);
             await personGroupPersonService.Delete(person.PersonId);
 
