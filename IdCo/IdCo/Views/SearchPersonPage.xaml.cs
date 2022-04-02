@@ -47,10 +47,10 @@ namespace IdCo.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void listViewPanel_ItemTapped(object sender, ItemTappedEventArgs e)
+        private async void listViewPanel_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             Person person = (Person)e.Item;
-            //TODO: Redirigir a otra vista incluyendo los datos de la persona selecionada.
+            await Navigation.PushAsync(new DeletePersonPage(person));
         }
         /// <summary>
         /// Búsqueda de personas en la base de datos
