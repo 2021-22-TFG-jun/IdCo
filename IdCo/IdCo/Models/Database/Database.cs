@@ -75,7 +75,7 @@ namespace IdCo.Models.Database
         /// <returns>Person buscada</returns>
         public List<Person.Person> SearchPersonByName(string name)
         {
-            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name == name).ToListAsync();
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name.Contains(name)).ToListAsync();
             return persons.Result;
         }
         /// <summary>
@@ -85,7 +85,7 @@ namespace IdCo.Models.Database
         /// <returns></returns>
         public List<Person.Person> SearchPersonByLastName(string lastName)
         {
-            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.LastName == lastName).ToListAsync();
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.LastName.Contains(lastName)).ToListAsync();
             return persons.Result;
         }
         /// <summary>
@@ -96,7 +96,7 @@ namespace IdCo.Models.Database
         /// <returns></returns>
         public List<Person.Person> SearchPersonByNameAndLastName(string name, string lastName)
         {
-            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name == name).Where(y => y.LastName == lastName).ToListAsync();            
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name.Contains(name)).Where(y => y.LastName.Contains(lastName)).ToListAsync();            
             return persons.Result;
         }
         /// <summary>
