@@ -2,40 +2,67 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IdCo.Views.SearchPersonPage"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              Title="Búsqueda de personas">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2196F3" Padding="20,0,20,0" Spacing="20" Orientation="Vertical">
-            <Entry x:Name="NameEntry"
-                   Placeholder="Introduce el nombre"
-                   TextColor="AliceBlue"
-                   FontSize="20"/>
-            <Entry x:Name="LastNameEntry"
-                   Placeholder="Introduce el apellido"
-                   TextColor="AliceBlue"
-                   FontSize="20"/>
+
+        <StackLayout BackgroundColor="#2196F3" Spacing="3" Orientation="Vertical">
+
+            <SearchBar x:Name="SearchCriteraSb"
+                       Placeholder="Buscar"
+                       TextColor="AliceBlue"
+                       CancelButtonColor="AliceBlue"
+                       TextChanged="SearchCriteraSb_TextChanged"/>
             
-            <Image x:Name="PhotoBD"
-                   WidthRequest="250"
-                   HeightRequest="250"
-                   IsVisible="false"/>
-            
-            <StackLayout x:Name="FirstStack" BackgroundColor="#2196F3" Padding="0,0,0,0" VerticalOptions="EndAndExpand" IsVisible="true">
-                <ImageButton x:Name="SearchBtn" Source="lupa480x150.png" 
-                             Clicked="SearchBtn_Clicked"
-                             VerticalOptions="EndAndExpand" 
-                             HorizontalOptions="EndAndExpand"
-                             IsVisible="true"/>
+            <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand">
+                <RadioButton x:Name="NameRBtn" 
+                             Content="Nombre" 
+                             FontSize="15" 
+                             TextColor="AliceBlue" 
+                             IsChecked="True" 
+                             HorizontalOptions="Start" 
+                             VerticalOptions="Start"/>
+                <RadioButton x:Name="LastNameRBtn" 
+                             Content="Apellido" 
+                             FontSize="15" 
+                             TextColor="AliceBlue" 
+                             IsChecked="False" 
+                             HorizontalOptions="Center" 
+                             VerticalOptions="Center"/>
             </StackLayout>
-            
-            <StackLayout x:Name="SecondStack" BackgroundColor="#2196F3" Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand" IsVisible="false">
-                <ImageButton x:Name="BackBtn" Source="back150x150.png" 
-                             Clicked="BackBtn_Clicked"
-                             VerticalOptions="Start" 
-                             HorizontalOptions="Start"/>
-                <ImageButton x:Name="TrashBtn" Source="Trash150x150.png" 
-                             Clicked="TrashBtn_Clicked"
-                             VerticalOptions="EndAndExpand" 
-                             HorizontalOptions="EndAndExpand"/>
+
+            <Label x:Name="CountLbl" TextColor="AliceBlue" FontSize="15" HorizontalOptions="End"/>
+
+            <StackLayout>
+                <ListView x:Name="listViewPanel" 
+                          RowHeight="90" 
+                          SeparatorVisibility="Default" 
+                          SeparatorColor="AliceBlue" 
+                          VerticalScrollBarVisibility="Always" 
+                          SelectionMode="Single"
+                          ItemTapped="listViewPanel_ItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell x:Name="ViewCell">
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding Photo, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                                           HorizontalOptions="Start" 
+                                           AbsoluteLayout.LayoutBounds="0.3,0.3"/>
+                                    <StackLayout Orientation="Vertical">
+                                        <Label Text="{Binding Name}" FontSize="20" TextColor="AliceBlue" AbsoluteLayout.LayoutBounds="0.3,0.3"/>
+                                        <Label Text="{Binding LastName}" TextColor="AliceBlue" AbsoluteLayout.LayoutBounds="0.7,0.3"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
