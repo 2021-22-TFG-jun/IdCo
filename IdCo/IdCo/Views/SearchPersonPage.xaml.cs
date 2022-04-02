@@ -7,99 +7,86 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 using IdCo.Services.Face;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace IdCo.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SearchPersonPage : ContentPage
     {
-        List<Person> persons = null;
-        PersonGroupPersonService personGroupPersonService;
+        public List<Person> peopleView { get; set; }
         public SearchPersonPage()
         {
             InitializeComponent();
-            personGroupPersonService = new PersonGroupPersonService();
         }
-
+        /// <summary>
+        /// Cargar todos los elementos de la Base de Datos
+        /// </summary>
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            var count = App.Database.Count();
+            peopleView = App.Database.SearchAllPersons();
+            CountLbl.Text = "Total: " + count;
+            listViewPanel.ItemsSource = peopleView;
+        }
         /// <summary>
         /// Buscar una persona en la BD, por su nombre y/o apellido.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void SearchBtn_Clicked(object sender, EventArgs e)
+        private void SearchBtn_Clicked(object sender, EventArgs e)
         {
-            string name = NameEntry.Text;
-            string lastName = LastNameEntry.Text;
+            listViewPanel.IsVisible = false;
+            CountLbl.IsVisible = false;
 
-            try
+        }
+        /// <summary>
+        /// Redirigir una vista de eliminación con la persona seleccionada
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listViewPanel_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Person person = (Person)e.Item;
+            //TODO: Redirigir a otra vista incluyendo los datos de la persona selecionada.
+        }
+        /// <summary>
+        /// Búsqueda de personas en la base de datos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SearchCriteraSb_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            bool filterByName = NameRBtn.IsChecked;
+            bool filterByLastname = LastNameRBtn.IsChecked;
+            List<Person> people = null;
+            string filtro = e.NewTextValue;
+            string[] delimitadores = { " " };
+            
+            if (string.IsNullOrWhiteSpace(filtro))
             {
-                if (!string.IsNullOrEmpty(name) || !string.IsNullOrEmpty(lastName))
+                people = App.Database.SearchAllPersons();
+            }
+            else
+            {
+                string[] fullname = filtro.Split(delimitadores, System.StringSplitOptions.RemoveEmptyEntries);      
+                if (filterByName)
                 {
-                    if(!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(lastName))
-                    {
-                        persons = App.Database.SearchPersonByNameAndLastName(name.Trim().ToLower(), lastName.Trim().ToLower());
-                    }
-                    else if(!string.IsNullOrEmpty(name))
-                    {
-                        persons = App.Database.SearchPersonByName(name.Trim().ToLower());
-                    }
-                    else
-                    {
-                        persons = App.Database.SearchPersonByLastName(lastName.Trim().ToLower());
-                    }
-                    //TODO: Cambiar para el caso en que obtengan mas de un resultado
-                    Person person = persons[0];
-
-                    byte[] photo = person.Photo;
-                    MemoryStream memoryStream = new MemoryStream(photo);
-                    Image image = new Image { Source = ImageSource.FromStream(() => memoryStream) };
-                    PhotoBD.IsVisible = true;
-                    PhotoBD.Source = image.Source;
-
-                    FirstStack.IsVisible = false;
-                    SecondStack.IsVisible = true;
+                    people = App.Database.SearchPersonByName(fullname[0]);
+                }else if (filterByLastname)
+                {
+                    people = App.Database.SearchPersonByLastName(fullname[0]);
                 }
                 else
                 {
-                    await DisplayAlert("Error", "Introduce algún criterio de búsqueda", "OK");
+                    people = App.Database.SearchAllPersons();
                 }
             }
-            catch
-            {
-                await DisplayAlert("Error", $"No existe ningún registro para los criterios de búqueda introducidos", "OK");
-            }
-        }
-        /// <summary>
-        /// Eliminar un objeto Person anteriormente buscado de la BD permanentemente.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void TrashBtn_Clicked(object sender, EventArgs e)
-        {
-            //TODO: Cambiar
-            Person person = persons[0];
 
-            App.Database.RemovePerson(person);
-            await personGroupPersonService.Delete(person.PersonId);
-
-            NameEntry.Text = string.Empty;
-            LastNameEntry.Text = string.Empty;
-            PhotoBD.Source = null;
-
-            await Navigation.PopAsync();
-        }
-        /// <summary>
-        /// Volver a la ventana anterior sin realizar ningún tipo de cambio
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void BackBtn_Clicked(object sender, EventArgs e)
-        {
-            NameEntry.Text = string.Empty;
-            LastNameEntry.Text = string.Empty;
-            PhotoBD.Source = null;
-
-            await Navigation.PopAsync();
+            listViewPanel.ItemsSource = people;
+            CountLbl.Text = "Total: " + people.Count;
         }
     }
 }
