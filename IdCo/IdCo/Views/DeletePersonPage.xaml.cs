@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+using IdCo.Models.Person;
+
 namespace IdCo.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DeletePersonPage : ContentPage
     {
-        public DeletePersonPage()
+        Person person = null;
+        public DeletePersonPage(Person person)
         {
             InitializeComponent();
+            this.person = person;
         }
     }
 }
