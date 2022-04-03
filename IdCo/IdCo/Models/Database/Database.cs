@@ -55,6 +55,8 @@ namespace IdCo.Models.Database
         /// <returns>numero de filas añadidas en la BD</returns>
         public int SavePerson(Person.Person person)
         {
+            person.Name = person.Name.ToUpper();
+            person.LastName = person.LastName.ToUpper();
             Task<int> num = database.InsertAsync(person);
             return num.Result;
         }
@@ -75,7 +77,8 @@ namespace IdCo.Models.Database
         /// <returns>Person buscada</returns>
         public List<Person.Person> SearchPersonByName(string name)
         {
-            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name.Contains(name)).ToListAsync();
+            string upperName = name.Trim().ToUpper();
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name.Contains(upperName)).ToListAsync();
             return persons.Result;
         }
         /// <summary>
@@ -85,7 +88,8 @@ namespace IdCo.Models.Database
         /// <returns></returns>
         public List<Person.Person> SearchPersonByLastName(string lastName)
         {
-            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.LastName.Contains(lastName)).ToListAsync();
+            string upperLastName = lastName.Trim().ToUpper();
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.LastName.Contains(upperLastName)).ToListAsync();
             return persons.Result;
         }
         /// <summary>
@@ -96,7 +100,9 @@ namespace IdCo.Models.Database
         /// <returns></returns>
         public List<Person.Person> SearchPersonByNameAndLastName(string name, string lastName)
         {
-            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name.Contains(name)).Where(y => y.LastName.Contains(lastName)).ToListAsync();            
+            string upperName = name.Trim().ToUpper();
+            string upperLastName = lastName.Trim().ToUpper();
+            Task<List<Person.Person>> persons = database.Table<Person.Person>().Where(x => x.Name.Contains(upperName)).Where(y => y.LastName.Contains(upperLastName)).ToListAsync();            
             return persons.Result;
         }
         /// <summary>
