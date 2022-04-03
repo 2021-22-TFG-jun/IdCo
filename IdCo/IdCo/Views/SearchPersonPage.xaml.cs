@@ -88,5 +88,14 @@ namespace IdCo.Views
             listViewPanel.ItemsSource = people;
             CountLbl.Text = "Total: " + people.Count;
         }
+        /// <summary>
+        /// Volver a la vista anterior
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void BackBtn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
     }
 }

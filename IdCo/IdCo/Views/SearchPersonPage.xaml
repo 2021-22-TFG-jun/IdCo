@@ -64,6 +64,12 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </StackLayout>
+            <StackLayout Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                <ImageButton x:Name="BackBtn" Source="back150x150.png" 
+                             VerticalOptions="Start"
+                             HorizontalOptions="Start"
+                             Clicked="BackBtn_Clicked"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
