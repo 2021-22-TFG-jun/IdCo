@@ -77,20 +77,18 @@ namespace IdCo.Views
                     if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
                     {
                         string name = NameEntry.Text;
-                        string lowerName = name.Trim().ToLower();
                         string lastName = LastNameEntry.Text;
-                        string lowerLastName = lastName.Trim().ToLower();
                         
                         byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
-                        var personId = await personGroupPersonService.Create(lowerName, lowerLastName);
+                        var personId = await personGroupPersonService.Create(name, lastName);
                         var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
 
                         Person person = new Person
                         {
-                            Name = lowerName,
+                            Name = name,
                             PersonId = personId.PersonId.ToString(),
                             FaceId = faceId.PersistedFaceId.ToString(),
-                            LastName = lowerLastName,
+                            LastName = lastName,
                             Photo = photoByte
                         };
 
