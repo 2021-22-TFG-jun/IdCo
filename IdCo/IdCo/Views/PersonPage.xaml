@@ -4,28 +4,48 @@
              x:Class="IdCo.Views.PersonPage"
              Title="Añadir nueva persona">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2196F3" Padding="20,0,20,0" Spacing="20" Orientation="Vertical">
-            <Image x:Name="PhotoImg"
-                   WidthRequest="250"
-                   HeightRequest="250"/>
+        <StackLayout BackgroundColor="#EBF5FB" Padding="0,0,0,0" Margin="0" Spacing="20" Orientation="Vertical">
+            <Frame BorderColor="#EBF5FB" BackgroundColor="#EBF5FB" HasShadow="False" Padding="0,20,0,20">
+                <StackLayout Orientation="Vertical" Spacing="15">
+                    <Image x:Name="PhotoImg"
+                           WidthRequest="200"
+                           HeightRequest="200"/>
+                </StackLayout>
+            </Frame>
             <Entry x:Name="NameEntry"
                    Placeholder="Nombre"
-                   TextColor="AliceBlue"
-                   FontSize="20"/>
+                   TextColor="#2874A6"
+                   FontSize="15"/>
             <Entry x:Name="LastNameEntry"
                    Placeholder="Apellidos"
-                   TextColor="AliceBlue"
-                   FontSize="20"/>
+                   TextColor="#2874A6"
+                   FontSize="15"/>
 
-            <StackLayout  BackgroundColor="#2196F3" Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <ImageButton x:Name="AspaBtn" Source="aspa150x150.png" 
-                             Clicked="AspaBtn_Clicked"
-                             VerticalOptions="Start" 
-                             HorizontalOptions="Start"/>
-                <ImageButton x:Name="TickBtn" Source="tick150x150.png" 
-                             Clicked="TickBtn_Clicked"
-                             VerticalOptions="EndAndExpand" 
-                             HorizontalOptions="EndAndExpand"/>
+            <StackLayout  BackgroundColor="#EBF5FB" Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand">
+                <Button x:Name="AspaBtn" 
+                        Text="Cancelar"
+                        FontSize="1"
+                        ImageSource="aspa.jpg"
+                        ContentLayout="Bottom,0"
+                        TextColor="#EBF5FB"
+                        BackgroundColor="#EBF5FB"
+                        BorderColor="#2874A6"
+                        BorderWidth="0"
+                        Clicked="AspaBtn_Clicked"
+                        VerticalOptions="Start" 
+                        HorizontalOptions="Start"/>
+                <Button x:Name="TickBtn" 
+                        Text="Aceptar"
+                        FontSize="1"
+                        ImageSource="tick.jpg" 
+                        ContentLayout="Bottom,0"
+                        TextColor="#EBF5FB"
+                        BackgroundColor="#EBF5FB"
+                        BorderColor="#2874A6"
+                        BorderWidth="0"
+                        Clicked="TickBtn_Clicked"
+                        VerticalOptions="EndAndExpand" 
+                        HorizontalOptions="EndAndExpand"/>
             </StackLayout>
 
         </StackLayout>
