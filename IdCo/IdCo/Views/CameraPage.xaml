@@ -2,9 +2,18 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IdCo.Views.CameraPage">
-    <RelativeLayout BackgroundColor="#2196F3">
-        <ImageButton x:Name="CameraBtn"
-                     Source="camera480x720.png"
-                     Clicked="CameraBtn_Clicked"/>
-    </RelativeLayout>
+    <StackLayout BackgroundColor="#B3E5FC" Orientation="Vertical">
+        <Button x:Name="CameraBtn"
+                Text="Agregar una nueva persona"
+                ContentLayout="Bottom,0"
+                TextColor="#B3E5FC"
+                FontSize="1"
+                BackgroundColor="#B3E5FC"
+                BorderColor="#2874A6"
+                BorderWidth="1"
+                ImageSource="add_person.jpg"
+                Clicked="CameraBtn_Clicked"
+                HorizontalOptions="Center"
+                VerticalOptions="CenterAndExpand"/>
+    </StackLayout>
 </ContentPage>
