@@ -3,37 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IdCo.Views.StartPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2196F3">
+        <StackLayout BackgroundColor="#B3E5FC">
             <Label x:Name="lbl_start"
                    Text="Bienvenid@ a Identificación de Conocidos"
                    VerticalOptions="CenterAndExpand" 
                    HorizontalOptions="CenterAndExpand" 
                    FontSize="36"
-                   TextColor="White"
+                   TextColor="#2874A6"
                    HorizontalTextAlignment="Center"/>
             <StackLayout x:Name="LoginDataPanel" VerticalOptions="CenterAndExpand" Padding="20,0,20,0">
-                <Label x:Name="lbl_login"
-                   Text="Inicia sesión en el recurso para continuar"
-                   VerticalOptions="CenterAndExpand" 
-                   HorizontalOptions="CenterAndExpand" 
-                   FontSize="36"
-                   TextColor="White"
-                   HorizontalTextAlignment="Center"/>
-                <Entry x:Name="ResourceNameEntry"
-                       Placeholder="Nombre"
-                       TextColor="AliceBlue"
-                       FontSize="20"
-                       VerticalOptions="CenterAndExpand"/>
-                <Entry x:Name="ResourceKeyEntry"
-                       Placeholder="Clave"
-                       IsPassword="True"
-                       TextColor="AliceBlue"
-                       FontSize="20"
-                       VerticalOptions="CenterAndExpand"/>
-                <Button x:Name="NextBtn"
-                        Text="Continuar"
-                        Clicked="NextBtn_Clicked"
-                        VerticalOptions="EndAndExpand"/>
+                <Frame BorderColor="#2874A6" BackgroundColor="#EBF5FB">
+                    <StackLayout>
+                        <Label x:Name="lbl_login"
+                               Text="Inicia sesión en el recurso para continuar"
+                               VerticalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand" 
+                               FontSize="26"
+                               TextColor="#2874A6"
+                               HorizontalTextAlignment="Center"/>
+                        <Entry x:Name="ResourceNameEntry"
+                               Placeholder="Nombre"
+                               TextColor="#2874A6"
+                               FontSize="20"
+                               VerticalOptions="CenterAndExpand"/>
+                        <Entry x:Name="ResourceKeyEntry"
+                               Placeholder="Clave"
+                               IsPassword="True"
+                               TextColor="#2874A6"
+                               FontSize="20"
+                               VerticalOptions="CenterAndExpand"/>
+                        <Button x:Name="NextBtn"
+                                Text="Continuar"
+                                TextColor="#2874A6"
+                                Clicked="NextBtn_Clicked"
+                                VerticalOptions="EndAndExpand"
+                                HorizontalOptions="EndAndExpand"
+                                BackgroundColor="#EBF5FB"
+                                BorderColor="#EBF5FB"/>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
