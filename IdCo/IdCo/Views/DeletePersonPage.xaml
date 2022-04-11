@@ -4,29 +4,45 @@
              x:Class="IdCo.Views.DeletePersonPage"
              Title="Eliminar persona">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2196F3">
-            <StackLayout BackgroundColor="#2196F3" Margin="20" Spacing="3" Orientation="Vertical">
-                <Frame BorderColor="Black" Padding="7">
+        <StackLayout BackgroundColor="#EBF5FB">
+            <StackLayout BackgroundColor="#EBF5FB" Margin="20" Spacing="3" Orientation="Vertical">
+                <Frame BorderColor="#2874A6" Padding="7">
                     <StackLayout Orientation="Vertical" Spacing="15">
                         <Image x:Name="FacePhoto"
                            WidthRequest="200"
                            HeightRequest="200"
                            HorizontalOptions="Center"/>
-                        <Label x:Name="PersonNameLbl" TextColor="Black" FontSize="Large" HorizontalOptions="Center"/>
-                        <Label x:Name="PersonLastnameLbl" TextColor="Black" FontSize="Large" HorizontalOptions="Center"/>
+                        <Label x:Name="PersonNameLbl" TextColor="#2874A6" FontSize="Large" HorizontalOptions="Center"/>
+                        <Label x:Name="PersonLastnameLbl" TextColor="#2874A6" FontSize="Large" HorizontalOptions="Center"/>
                     </StackLayout>
                 </Frame>
             </StackLayout>
-
+            
             <StackLayout Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <ImageButton x:Name="BackBtn" Source="back150x150.png" 
-                             VerticalOptions="Start"
-                             HorizontalOptions="Start"
-                             Clicked="BackBtn_Clicked"/>
-                <ImageButton x:Name="TrashBtn" Source="Trash150x150.png" 
-				             VerticalOptions="EndAndExpand"
-                             HorizontalOptions="EndAndExpand"
-                             Clicked="TrashBtn_Clicked"/>
+                <Button x:Name="BackBtn" 
+                        Text="Volver atras"
+                        FontSize="1"
+                        ImageSource="back.jpg" 
+                        ContentLayout="Bottom,0"
+                        TextColor="#EBF5FB"
+                        BackgroundColor="#EBF5FB"
+                        BorderColor="#2874A6"
+                        BorderWidth="0"
+                        VerticalOptions="Start"
+                        HorizontalOptions="Start"
+                        Clicked="BackBtn_Clicked"/>
+                <Button x:Name="TrashBtn" 
+                        FontSize="1"
+                        Text="Eliminar"
+                        ImageSource="trash.jpg"
+                        ContentLayout="Bottom,0"
+                        TextColor="#EBF5FB"
+                        BackgroundColor="#EBF5FB"
+                        BorderColor="#2874A6"
+                        BorderWidth="0"
+				        VerticalOptions="EndAndExpand"
+                        HorizontalOptions="EndAndExpand"
+                        Clicked="TrashBtn_Clicked"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
