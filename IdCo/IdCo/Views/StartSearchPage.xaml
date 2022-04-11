@@ -3,10 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IdCo.Views.StartSearchPage">
     <ContentPage.Content>
-        <RelativeLayout BackgroundColor="#2196F3">
-            <ImageButton x:Name="SearchBtn" 
-                         Source="lupa480x720.png"
-                         Clicked="SearchBtn_Clicked"/>
-        </RelativeLayout>
+        <StackLayout BackgroundColor="#B3E5FC" Orientation="Vertical">
+            <Button x:Name="SearchBtn"
+                    Text="Búsqueda de personas"
+                    FontSize="1"
+                    ContentLayout="Bottom,0"
+                    TextColor="#B3E5FC"
+                    BackgroundColor="#B3E5FC"
+                    BorderColor="#2874A6"
+                    BorderWidth="1"
+                    ImageSource="search.jpg"
+                    Clicked="SearchBtn_Clicked"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
