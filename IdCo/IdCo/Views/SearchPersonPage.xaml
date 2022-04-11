@@ -12,38 +12,39 @@
 
     <ContentPage.Content>
 
-        <StackLayout BackgroundColor="#2196F3" Spacing="3" Orientation="Vertical">
+        <StackLayout BackgroundColor="#EBF5FB" Spacing="3" Orientation="Vertical">
 
             <SearchBar x:Name="SearchCriteraSb"
                        Placeholder="Buscar"
-                       TextColor="AliceBlue"
-                       CancelButtonColor="AliceBlue"
+                       TextColor="#2874A6"
+                       CancelButtonColor="#E59866"
                        TextChanged="SearchCriteraSb_TextChanged"/>
             
             <StackLayout Orientation="Horizontal" VerticalOptions="EndAndExpand" HorizontalOptions="CenterAndExpand">
                 <RadioButton x:Name="NameRBtn" 
                              Content="Nombre" 
                              FontSize="15" 
-                             TextColor="AliceBlue" 
+                             TextColor="#2874A6" 
                              IsChecked="True" 
                              HorizontalOptions="Start" 
                              VerticalOptions="Start"/>
                 <RadioButton x:Name="LastNameRBtn" 
                              Content="Apellido" 
                              FontSize="15" 
-                             TextColor="AliceBlue" 
+                             TextColor="#2874A6" 
                              IsChecked="False" 
                              HorizontalOptions="Center" 
                              VerticalOptions="Center"/>
             </StackLayout>
 
-            <Label x:Name="CountLbl" TextColor="AliceBlue" FontSize="15" HorizontalOptions="End"/>
+            <Label x:Name="CountLbl" TextColor="#2874A6" FontSize="15" HorizontalOptions="End"/>
 
             <StackLayout>
                 <ListView x:Name="listViewPanel" 
                           RowHeight="90" 
                           SeparatorVisibility="Default" 
-                          SeparatorColor="AliceBlue" 
+                          SeparatorColor="#2874A6" 
+                          
                           VerticalScrollBarVisibility="Always" 
                           SelectionMode="Single"
                           ItemTapped="listViewPanel_ItemTapped">
@@ -55,8 +56,8 @@
                                            HorizontalOptions="Start" 
                                            AbsoluteLayout.LayoutBounds="0.3,0.3"/>
                                     <StackLayout Orientation="Vertical">
-                                        <Label Text="{Binding Name}" FontSize="20" TextColor="AliceBlue" AbsoluteLayout.LayoutBounds="0.3,0.3"/>
-                                        <Label Text="{Binding LastName}" TextColor="AliceBlue" AbsoluteLayout.LayoutBounds="0.7,0.3"/>
+                                        <Label Text="{Binding Name}" FontSize="20" TextColor="#2874A6" AbsoluteLayout.LayoutBounds="0.3,0.3"/>
+                                        <Label Text="{Binding LastName}" TextColor="#2874A6" AbsoluteLayout.LayoutBounds="0.7,0.3"/>
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell>
@@ -65,10 +66,18 @@
                 </ListView>
             </StackLayout>
             <StackLayout Padding="0,0,0,0" Orientation="Horizontal" VerticalOptions="EndAndExpand">
-                <ImageButton x:Name="BackBtn" Source="back150x150.png" 
-                             VerticalOptions="Start"
-                             HorizontalOptions="Start"
-                             Clicked="BackBtn_Clicked"/>
+                <Button x:Name="BackBtn" 
+                        Text="Volver atras"
+                        FontSize="1"
+                        ContentLayout="Bottom,0"
+                        TextColor="#EBF5FB"
+                        BackgroundColor="#EBF5FB"
+                        BorderColor="#2874A6"
+                        BorderWidth="0"
+                        ImageSource="back.jpg" 
+                        VerticalOptions="Start"
+                        HorizontalOptions="Start"
+                        Clicked="BackBtn_Clicked"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
