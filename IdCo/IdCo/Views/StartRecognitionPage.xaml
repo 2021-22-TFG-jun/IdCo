@@ -3,10 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="IdCo.Views.StartRecognitionPage">
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2196F3">
-            <ImageButton x:Name="PlayBtn"
-                         Source="play480x720"
-                         Clicked="PlayBtn_Clicked"/>
+        <StackLayout BackgroundColor="#B3E5FC" Orientation="Vertical">
+            <Button x:Name="PlayBtn"
+                    Text="Iniciar trayecto"
+                    FontSize="1"
+                    ContentLayout="Bottom,0"
+                    TextColor="#B3E5FC"
+                    BackgroundColor="#B3E5FC"
+                    BorderColor="#2874A6"
+                    BorderWidth="1"
+                    ImageSource="play.jpg"
+                    Clicked="PlayBtn_Clicked"
+                    HorizontalOptions="Center"
+                    VerticalOptions="CenterAndExpand"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
