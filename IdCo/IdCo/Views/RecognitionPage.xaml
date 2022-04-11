@@ -12,22 +12,33 @@
                             HorizontalOptions="FillAndExpand"
                             VerticalOptions="FillAndExpand"/>
 
-            <StackLayout  Orientation="Horizontal" VerticalOptions="EndAndExpand" >
+            <StackLayout  Orientation="Horizontal" VerticalOptions="EndAndExpand" BackgroundColor="#EBF5FB">
                 <Button x:Name="BackBtn" 
-                        Text="Salir" 
-                        FontSize="35"
+                        Text="Salir"
+                        FontSize="1"
+                        ContentLayout="Bottom,0"
+                        TextColor="#EBF5FB"
+                        BackgroundColor="#EBF5FB"
+                        BorderColor="#2874A6"
+                        BorderWidth="0"
+                        ImageSource="back.jpg"
                         Clicked="BackBtn_Clicked"
                         Pressed="BackBtn_Clicked"
                         VerticalOptions="Start" 
                         HorizontalOptions="FillAndExpand"/>
+
                 <Button x:Name="StartBtn" 
-                        Text="Empezar" 
-                        FontSize="35"
+                        Text="Empezar trayecto" 
+                        FontSize="1"
+                        ContentLayout="Bottom,0"
+                        TextColor="#EBF5FB"
+                        BackgroundColor="#EBF5FB"
+                        BorderColor="#2874A6"
+                        BorderWidth="0"
+                        ImageSource="mini_play.jpg"
                         Clicked="StartBtn_Clicked"
                         VerticalOptions="EndAndExpand" 
                         HorizontalOptions="FillAndExpand"/>
-
-
             </StackLayout>
         </Grid>
     </ContentPage.Content>
