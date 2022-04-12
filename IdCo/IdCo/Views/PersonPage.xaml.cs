@@ -9,6 +9,8 @@ using IdCo.Models.Person;
 using IdCo.Services.Face;
 using IdCo.Models.Face;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace IdCo.Views
 { 
@@ -25,16 +27,13 @@ namespace IdCo.Views
             InitializeComponent();
             this.photo = photo;
 
-            PhotoImg.Source = ImageSource.FromStream(() =>
-            {
-                var stream = photo.GetStream();
-                return stream;
-            });
-
             personGroupPersonService = new PersonGroupPersonService();
             faceService = new FaceService();
             personGroupService = new PersonGroupService();
         }
+        /// <summary>
+        /// Cargar y comprobar los elementos antes de la visualizacion en la vista.
+        /// </summary>
         protected override async void OnAppearing()
         {
             Face[] detectFaces = await faceService.Detect(true, photo.GetStream());
@@ -43,6 +42,12 @@ namespace IdCo.Views
                 await DisplayAlert("Error", "No se ha detectado ningun rostro, vuelve a intentarlo", "OK");
                 await Navigation.PopAsync();
             }
+
+            PhotoImg.Source = ImageSource.FromStream(() =>
+            {
+                var stream = photo.GetStream();
+                return stream;
+            });
         }
 
         /// <summary>
@@ -78,37 +83,12 @@ namespace IdCo.Views
         /// <param name="e"></param>
         private async void TickBtn_Clicked(object sender, EventArgs e)
         {
-            
+            if (! await AreNameAndLastnameEntryCorrect())
+                return;
+
             try
             {
-                
-                if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
-                {
-                    string name = NameEntry.Text;
-                    string lastName = LastNameEntry.Text;
-                        
-                    byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
-                    var personId = await personGroupPersonService.Create(name, lastName);
-                    var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
-
-                    Person person = new Person
-                    {
-                        Name = name,
-                        PersonId = personId.PersonId.ToString(),
-                        FaceId = faceId.PersistedFaceId.ToString(),
-                        LastName = lastName,
-                        Photo = photoByte
-                    };
-
-                    App.Database.SavePerson(person);
-
-                    await personGroupService.Train();
-                }
-                else
-                {
-                    await DisplayAlert("Error","Introduce el nombre y el apellido de la persona", "OK");
-                }
-                
+                AddNewPersonToDBAndAPI_TrainGroup();
             }
             catch (Exception ex)
             {
@@ -122,6 +102,51 @@ namespace IdCo.Views
             }
 
             await Navigation.PopAsync();
+        }
+        /// <summary>
+        /// Comprobar si se han introducido los campos obligatorios (nombre y apellido)
+        /// En caso negativo, mostrar una alerta.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> AreNameAndLastnameEntryCorrect()
+        {
+            if(string.IsNullOrEmpty(NameEntry.Text) || string.IsNullOrEmpty(LastNameEntry.Text))
+            {
+                if (string.IsNullOrEmpty(NameEntry.Text) && string.IsNullOrEmpty(LastNameEntry.Text))
+                    await DisplayAlert("Error", "Introduce el nombre y el apellido de la persona", "OK");
+                else if (string.IsNullOrEmpty(NameEntry.Text))
+                    await DisplayAlert("Error", "Introduce el nombre de la persona", "OK");
+                else 
+                    await DisplayAlert("Error", "Introduce el apellido de la persona", "OK");
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// Añadir una nueva persona a la Base de Datos, al Face API Service y
+        /// finalmente entrenar el conjunto.
+        /// </summary>
+        private async void AddNewPersonToDBAndAPI_TrainGroup()
+        {
+            string name = NameEntry.Text;
+            string lastName = LastNameEntry.Text;
+
+            byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
+            var personId = await personGroupPersonService.Create(name, lastName);
+            var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
+
+            Person person = new Person
+            {
+                Name = name,
+                PersonId = personId.PersonId.ToString(),
+                FaceId = faceId.PersistedFaceId.ToString(),
+                LastName = lastName,
+                Photo = photoByte
+            };
+
+            App.Database.SavePerson(person);
+
+            await personGroupService.Train();
         }
     }
 }
