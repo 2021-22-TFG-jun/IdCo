@@ -17,10 +17,10 @@ namespace IdCo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PersonPage : ContentPage
     {
-        MediaFile photo;
-        PersonGroupPersonService personGroupPersonService;
-        FaceService faceService;
-        PersonGroupService personGroupService;
+        readonly MediaFile photo;
+        readonly PersonGroupPersonService personGroupPersonService;
+        readonly FaceService faceService;
+        readonly PersonGroupService personGroupService;
 
         public PersonPage(MediaFile photo)
         {
@@ -85,7 +85,9 @@ namespace IdCo.Views
         {
             bool checkInputs = await AreNameAndLastnameEntryCorrect().ConfigureAwait(false);
             if (!checkInputs)
+            {
                 return;
+            }
 
             try
             {
@@ -116,11 +118,17 @@ namespace IdCo.Views
             if(string.IsNullOrEmpty(NameEntry.Text) || string.IsNullOrEmpty(LastNameEntry.Text))
             {
                 if (string.IsNullOrEmpty(NameEntry.Text) && string.IsNullOrEmpty(LastNameEntry.Text))
+                {
                     await DisplayAlert("Error", "Introduce el nombre y el apellido de la persona", "OK");
+                }
                 else if (string.IsNullOrEmpty(NameEntry.Text))
+                {
                     await DisplayAlert("Error", "Introduce el nombre de la persona", "OK");
-                else 
+                }                    
+                else
+                {
                     await DisplayAlert("Error", "Introduce el apellido de la persona", "OK");
+                }   
                 return false;
             }
             return true;
