@@ -35,6 +35,16 @@ namespace IdCo.Views
             faceService = new FaceService();
             personGroupService = new PersonGroupService();
         }
+        protected override async void OnAppearing()
+        {
+            Face[] detectFaces = await faceService.Detect(true, photo.GetStream());
+            if (!detectFaces.Any())
+            {
+                await DisplayAlert("Error", "No se ha detectado ningun rostro, vuelve a intentarlo", "OK");
+                await Navigation.PopAsync();
+            }
+        }
+
         /// <summary>
         /// Convertir un stream a byte array.
         /// </summary>
@@ -71,40 +81,34 @@ namespace IdCo.Views
             
             try
             {
-                Face[] detectFaces = await faceService.Detect(true, photo.GetStream());
-                if (detectFaces.Any())
+                
+                if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
                 {
-                    if (!string.IsNullOrEmpty(NameEntry.Text) && !string.IsNullOrEmpty(LastNameEntry.Text))
-                    {
-                        string name = NameEntry.Text;
-                        string lastName = LastNameEntry.Text;
+                    string name = NameEntry.Text;
+                    string lastName = LastNameEntry.Text;
                         
-                        byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
-                        var personId = await personGroupPersonService.Create(name, lastName);
-                        var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
+                    byte[] photoByte = this.ImageStreamToByteArray(photo.GetStream());
+                    var personId = await personGroupPersonService.Create(name, lastName);
+                    var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), photo.GetStream());
 
-                        Person person = new Person
-                        {
-                            Name = name,
-                            PersonId = personId.PersonId.ToString(),
-                            FaceId = faceId.PersistedFaceId.ToString(),
-                            LastName = lastName,
-                            Photo = photoByte
-                        };
-
-                        App.Database.SavePerson(person);
-
-                        await personGroupService.Train();
-                    }
-                    else
+                    Person person = new Person
                     {
-                        await DisplayAlert("Error","Introduce el nombre y el apellido de la persona", "OK");
-                    }
+                        Name = name,
+                        PersonId = personId.PersonId.ToString(),
+                        FaceId = faceId.PersistedFaceId.ToString(),
+                        LastName = lastName,
+                        Photo = photoByte
+                    };
+
+                    App.Database.SavePerson(person);
+
+                    await personGroupService.Train();
                 }
                 else
                 {
-                    Console.WriteLine("No se ha detectado ningun rostro");
+                    await DisplayAlert("Error","Introduce el nombre y el apellido de la persona", "OK");
                 }
+                
             }
             catch (Exception ex)
             {
