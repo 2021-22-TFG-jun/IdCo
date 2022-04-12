@@ -83,16 +83,19 @@ namespace IdCo.Views
         /// <param name="e"></param>
         private async void TickBtn_Clicked(object sender, EventArgs e)
         {
-            if (! await AreNameAndLastnameEntryCorrect())
+            bool checkInputs = await AreNameAndLastnameEntryCorrect();
+            if (!checkInputs)
                 return;
 
             try
             {
-                AddNewPersonToDBAndAPI_TrainGroup();
+                await AddNewPersonToDBAndAPI_TrainGroup();
             }
             catch (Exception ex)
             {
+#if DEBUG
                 Console.WriteLine($"Error: {ex.Message}");
+#endif
             }
             finally
             {
@@ -126,7 +129,7 @@ namespace IdCo.Views
         /// Añadir una nueva persona a la Base de Datos, al Face API Service y
         /// finalmente entrenar el conjunto.
         /// </summary>
-        private async void AddNewPersonToDBAndAPI_TrainGroup()
+        private async Task AddNewPersonToDBAndAPI_TrainGroup()
         {
             string name = NameEntry.Text;
             string lastName = LastNameEntry.Text;
