@@ -83,13 +83,13 @@ namespace IdCo.Views
         /// <param name="e"></param>
         private async void TickBtn_Clicked(object sender, EventArgs e)
         {
-            bool checkInputs = await AreNameAndLastnameEntryCorrect();
+            bool checkInputs = await AreNameAndLastnameEntryCorrect().ConfigureAwait(false);
             if (!checkInputs)
                 return;
 
             try
             {
-                await AddNewPersonToDBAndAPI_TrainGroup();
+                await AddNewPersonToDBAndAPI_TrainGroup().ConfigureAwait(true);
             }
             catch (Exception ex)
             {
