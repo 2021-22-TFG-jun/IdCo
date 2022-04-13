@@ -29,7 +29,7 @@ namespace IdCo.Views
                 LoginDataPanel.IsVisible = false;
             }
         }
-
+        
         private async void NextBtn_Clicked(object sender, EventArgs e)
         {
             string resourceName = ResourceNameEntry.Text;
@@ -41,7 +41,7 @@ namespace IdCo.Views
             {
                 if (!string.IsNullOrEmpty(resourceName))
                 {
-                    Application.Current.Properties["ResourceName"] = resourceName.ToString();
+                    Application.Current.Properties["ResourceName"] = resourceName;
                     await Application.Current.SavePropertiesAsync();
                     flag1 = true;
                 }
@@ -52,7 +52,7 @@ namespace IdCo.Views
 
                 if (!string.IsNullOrEmpty(resourceKey))
                 {
-                    Application.Current.Properties["ResourceKey"] = resourceKey.ToString();
+                    Application.Current.Properties["ResourceKey"] = resourceKey;
                     await Application.Current.SavePropertiesAsync();
                     flag2 = true;
                 }
@@ -70,7 +70,7 @@ namespace IdCo.Views
             {
                 personGroupService = new PersonGroupService();
                 //TODO: Descomentar para eliminar el recurso del API (reiniciarlo)
-                await personGroupService.Delete();
+                //await personGroupService.Delete();
                 await personGroupService.Create();
 
                 lbl_start.IsVisible = true;
