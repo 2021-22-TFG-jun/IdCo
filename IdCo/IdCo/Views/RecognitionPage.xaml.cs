@@ -20,9 +20,9 @@ namespace IdCo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecognitionPage : ContentPage
     {
-        BackgroundWorker tarea = null;
-        FaceService faceService;
-        bool procesado = false;
+        BackgroundWorker tarea;
+        readonly FaceService faceService;
+        bool procesado;
         /// <summary>
         /// Inicializador de la vista y del servicio.
         /// </summary>
@@ -41,23 +41,13 @@ namespace IdCo.Views
         private async void cameraView_MediaCaptured(object sender, MediaCapturedEventArgs e)
         {
             byte[] photo = e.ImageData.ToArray<byte>();
-            ImageSource sourceImg = e.Image;
-
             using (var stream = new MemoryStream(photo))
             {
                 Face[] detectFaces = await faceService.Detect(true, stream);
                 if (detectFaces.Any())
                 {
-                    Guid[] facesIds = new Guid[detectFaces.Length];
-                    int i = 0;
-                    foreach (Face face in detectFaces)
-                    {
-                        facesIds[i] = face.FaceId;
-                        i = i + 1;
-                    }
-
+                    Guid[] facesIds = GetFacesIds(detectFaces);
                     Face[] identifyFaces = await faceService.Identify(facesIds);
-                    
                     if (identifyFaces.Any())
                     {
                         foreach (var rostro in identifyFaces)
@@ -68,15 +58,27 @@ namespace IdCo.Views
                                 await TextToSpeech.SpeakAsync(person.Name + " " + person.LastName);
                             }
                         }
-                        
-                    }                    
-                }
-                else
-                {
-                    Console.WriteLine("NO SE HA DETECTADO NINGUN ROSTRO");
+                    }
                 }
             }
             procesado = true;
+        }
+        /// <summary>
+        /// Obtener los FacesId detectados.
+        /// </summary>
+        /// <param name="detectFaces"></param>
+        /// <returns></returns>
+        private Guid[] GetFacesIds(Face[] detectFaces)
+        {
+            Guid[] facesIds = new Guid[detectFaces.Length];
+            int i = 0;
+            foreach (Face face in detectFaces)
+            {
+                facesIds[i] = face.FaceId;
+                i++;
+            }
+
+            return facesIds;
         }
         /// <summary>
         /// Volver a la vista inmediatamente anterior
@@ -86,7 +88,10 @@ namespace IdCo.Views
         private async void BackBtn_Clicked(object sender, EventArgs e)
         {
             if(tarea != null)
+            {
                 tarea.CancelAsync();
+            }
+            
             await Navigation.PopAsync();
         }
 
@@ -126,8 +131,6 @@ namespace IdCo.Views
         private void DoWork(object obj, DoWorkEventArgs eventArgs)
         {
             BackgroundWorker bw = obj as BackgroundWorker;
-
-            int arg = (int)eventArgs.Argument;
             TakePhotoPeriodically(bw);
 
             if (tarea.CancellationPending)
@@ -165,15 +168,21 @@ namespace IdCo.Views
 
             if (e.Cancelled)
             {
+#if DEBUG
                 Console.WriteLine("Tarea cancelada");
+#endif
             }
             else if(e.Error != null)
             {
+#if DEBUG
                 Console.WriteLine("A ocurrido un error: " + e.Error.Message);
+#endif
             }
             else
             {
+#if DEBUG
                 Console.WriteLine("Se ha terminado correctamente la tarea: " + e.Result);
+#endif
             }
         }
     }
