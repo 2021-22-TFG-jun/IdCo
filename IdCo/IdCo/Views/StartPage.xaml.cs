@@ -3,6 +3,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using IdCo.Services.Face;
+using System.Threading.Tasks;
 
 namespace IdCo.Views
 {
@@ -29,48 +30,64 @@ namespace IdCo.Views
                 LoginDataPanel.IsVisible = false;
             }
         }
-        
-        private async void NextBtn_Clicked(object sender, EventArgs e)
+        /// <summary>
+        /// Comprobar si el campo del nombre del recurso esta completado.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> CheckResourceNameField()
         {
             string resourceName = ResourceNameEntry.Text;
-            string resourceKey = ResourceKeyEntry.Text;
-            bool flag1 = false;
-            bool flag2 = false;
 
-            if(!string.IsNullOrEmpty(resourceName) || !string.IsNullOrEmpty(resourceKey))
+            if (!string.IsNullOrEmpty(resourceName) || !string.IsNullOrWhiteSpace(resourceName))
             {
-                if (!string.IsNullOrEmpty(resourceName))
-                {
-                    Application.Current.Properties["ResourceName"] = resourceName;
-                    await Application.Current.SavePropertiesAsync();
-                    flag1 = true;
-                }
-                else
-                {
-                    await DisplayAlert("Error", "Introduce el nombre del recurso para continuar", "OK");
-                }
-
-                if (!string.IsNullOrEmpty(resourceKey))
-                {
-                    Application.Current.Properties["ResourceKey"] = resourceKey;
-                    await Application.Current.SavePropertiesAsync();
-                    flag2 = true;
-                }
-                else
-                {
-                    await DisplayAlert ("Error", "Introduce la clave del recurso para continuar", "OK");
-                }
+                Application.Current.Properties["ResourceName"] = resourceName;
+                await Application.Current.SavePropertiesAsync();
+                return true;
             }
             else
             {
-                await DisplayAlert ("Error", "Rellena los campos", "OK");
+                await DisplayAlert("Error", "Introduce el nombre del recurso para continuar", "OK");
             }
 
-            if(flag1 && flag2)
+            return false;
+        }
+        /// <summary>
+        /// Comprobar si el campo de la clave del recurso esta completado.
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> CheckResourceKeyField()
+        {
+            string resourceKey = ResourceKeyEntry.Text;
+
+            if (!string.IsNullOrEmpty(resourceKey))
+            {
+                Application.Current.Properties["ResourceKey"] = resourceKey;
+                await Application.Current.SavePropertiesAsync();
+                return true;
+            }
+            else
+            {
+                await DisplayAlert("Error", "Introduce la clave del recurso para continuar", "OK");
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Pasar a la siguiente vista siempre y cuando se haya rellenado los campos
+        /// obligatorios del recurso.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void NextBtn_Clicked(object sender, EventArgs e)
+        {
+            bool flag1 = await CheckResourceNameField().ConfigureAwait(true);
+            bool flag2 = await CheckResourceKeyField().ConfigureAwait(true);
+
+            if (flag1 && flag2)
             {
                 personGroupService = new PersonGroupService();
-                //TODO: Descomentar para eliminar el recurso del API (reiniciarlo)
-                //await personGroupService.Delete();
+                //TODO: Descomentar para eliminar el recurso del API (reiniciarlo)  //await personGroupService.Delete();
+
                 await personGroupService.Create();
 
                 lbl_start.IsVisible = true;
