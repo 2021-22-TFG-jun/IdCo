@@ -142,8 +142,6 @@ namespace IdCo.Views
         /// <param name="bw"></param>
         private void TakePhotoPeriodically(BackgroundWorker bw)
         {
-            int result = 0;
-
             while (!bw.CancellationPending)
             {
                 procesado = false;
@@ -152,14 +150,9 @@ namespace IdCo.Views
 
                 while (!procesado && i < 3)
                 {
-                    System.Threading.Thread.Sleep(20000); // dar tiempo para procesar la imagen
+                    System.Threading.Thread.Sleep(30000); // dar tiempo para procesar la imagen
                     i = i + 1;
                 }
-                
-                result += 1;
-
-                if (result == 10)
-                    break;
             }
         }
         /// <summary>
