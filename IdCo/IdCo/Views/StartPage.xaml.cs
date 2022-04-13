@@ -86,14 +86,20 @@ namespace IdCo.Views
             if (flag1 && flag2)
             {
                 personGroupService = new PersonGroupService();
-                //TODO: Descomentar para eliminar el recurso del API (reiniciarlo)  //await personGroupService.Delete();
-
-                await personGroupService.Create();
-
-                lbl_start.IsVisible = true;
-                LoginDataPanel.IsVisible = false;
+                string status = await personGroupService.Create();
+                if (string.Equals(status, "OK") || string.Equals(status, "Conflict"))
+                {
+                    lbl_start.IsVisible = true;
+                    LoginDataPanel.IsVisible = false;
+                }
+                else if (string.Equals(status, "Unauthorized"))
+                {
+                    await DisplayAlert("Error", "La clave de subscripción es invalida o esta bloqueada. Contacte con su proveedor.", "OK");
+                }else
+                {
+                    await DisplayAlert("Error", "Se ha producido un error. Contacte con su proveedor.", "OK");
+                }
             }
-            
         }
     }
 }
