@@ -24,8 +24,6 @@ namespace IdCo
                     database = new Database(Settings.BDName);
                     
                 }
-                //TODO: Descomentar para reiniciar la tabla Person en BD
-                //database.DropTable();
                 database.CreateTable();
                 return database;
             }
@@ -35,12 +33,9 @@ namespace IdCo
         {
             InitializeComponent();
 
-            // Nuevo estilo de navegabilidad, desplazar vistas de izq - der y der - izq
             CarouselPage carousel = new CarouselPage();
-
             carousel.Children.Add(new StartPage());
             carousel.Children.Add(new StartRecognitionPage());
-            //carousel.Children.Add(new RecognitionPage());
             carousel.Children.Add(new CameraPage());
             carousel.Children.Add(new StartSearchPage());
 
