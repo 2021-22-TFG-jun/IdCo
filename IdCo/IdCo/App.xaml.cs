@@ -44,14 +44,17 @@ namespace IdCo
 
         protected override void OnStart()
         {
+            //TODO: Se lanza cuando la aplicación se inicia
         }
 
         protected override void OnSleep()
         {
+            //TODO: Se llama cuando la aplicación esta en suspensión/segundo plano.
         }
 
         protected override void OnResume()
         {
+            //TODO: Se llama despues de salir del estado de suspensión
         }
     }
 }
