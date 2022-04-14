@@ -125,8 +125,11 @@ namespace IdCo.Views
         private void FiltersRadioBtn_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             string filtro = SearchCriteraSb.Text;
-            List<Person> people = SearchInDBByCriteriaField(filtro);
-            RefreshPeopleList(people);
+            if(!string.IsNullOrEmpty(filtro) && !string.IsNullOrWhiteSpace(filtro))
+            {
+                List<Person> people = SearchInDBByCriteriaField(filtro);
+                RefreshPeopleList(people);
+            }
         }
     }
 }
