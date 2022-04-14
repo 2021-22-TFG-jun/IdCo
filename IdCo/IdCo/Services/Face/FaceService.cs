@@ -63,7 +63,7 @@ namespace IdCo.Services.Face
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
-            Models.Face.Face[] faces = await ConvertHttpResponseToFace(httpResponseMessage);
+            Models.Face.Face[] faces = await ConvertHttpResponseToFace(httpResponseMessage).ConfigureAwait(true);
             return faces;
         }
         /// <summary>
@@ -97,7 +97,7 @@ namespace IdCo.Services.Face
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
-            Models.Face.Face[] faces = await ConvertHttpResponseToFace(httpResponseMessage);
+            Models.Face.Face[] faces = await ConvertHttpResponseToFace(httpResponseMessage).ConfigureAwait(true);
             return faces;
         }
         /// <summary>
