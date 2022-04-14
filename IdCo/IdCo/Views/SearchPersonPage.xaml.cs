@@ -26,10 +26,8 @@ namespace IdCo.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            var count = App.Database.Count();
             peopleView = App.Database.SearchAllPersons();
-            CountLbl.Text = "Total: " + count;
-            listViewPanel.ItemsSource = peopleView;
+            RefreshPeopleList(peopleView);
         }
         /// <summary>
         /// Buscar una persona en la BD, por su nombre y/o apellido.
@@ -58,33 +56,55 @@ namespace IdCo.Views
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void SearchCriteraSb_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            bool filterByName = NameRBtn.IsChecked;
-            bool filterByLastname = LastNameRBtn.IsChecked;
+        {  
             List<Person> people = null;
             string filtro = e.NewTextValue;
-            string[] delimitadores = { " " };
-            
+
             if (string.IsNullOrWhiteSpace(filtro))
             {
                 people = App.Database.SearchAllPersons();
             }
             else
             {
-                string[] fullname = filtro.Split(delimitadores, System.StringSplitOptions.RemoveEmptyEntries);      
-                if (filterByName)
-                {
-                    people = App.Database.SearchPersonByName(fullname[0]);
-                }else if (filterByLastname)
-                {
-                    people = App.Database.SearchPersonByLastName(fullname[0]);
-                }
-                else
-                {
-                    people = App.Database.SearchAllPersons();
-                }
+                people = SearchInDBByCriteriaField(filtro);
             }
 
+            RefreshPeopleList(people);
+        }
+        /// <summary>
+        /// Búsqueda de personas en la Base de Datos que conincidan con
+        /// un filtro y campo especifico.
+        /// </summary>
+        /// <param name="filtro"></param>
+        /// <returns></returns>
+        private List<Person> SearchInDBByCriteriaField(string filtro)
+        {
+            List<Person> people = null;
+            string[] delimitadores = { " " };
+            string[] fullname = filtro.Split(delimitadores, System.StringSplitOptions.RemoveEmptyEntries);
+            bool filterByName = NameRBtn.IsChecked;
+            bool filterByLastname = LastNameRBtn.IsChecked;
+
+            if (filterByName)
+            {
+                people = App.Database.SearchPersonByName(fullname[0]);
+            }
+            else if (filterByLastname)
+            {
+                people = App.Database.SearchPersonByLastName(fullname[0]);
+            }
+            else
+            {
+                people = App.Database.SearchAllPersons();
+            }
+            return people;
+        }
+        /// <summary>
+        /// Refrescar la lista con los nuevos elementos filtrados.
+        /// </summary>
+        /// <param name="people"></param>
+        private void RefreshPeopleList(List<Person> people)
+        {
             listViewPanel.ItemsSource = people;
             CountLbl.Text = "Total: " + people.Count;
         }
@@ -96,6 +116,17 @@ namespace IdCo.Views
         private async void BackBtn_Clicked(object sender, EventArgs e)
         {
             await Navigation.PopAsync();
+        }
+        /// <summary>
+        /// Realizar la búsqueda cuando se cambie el tipo de filtro entre nombre y apellido.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FiltersRadioBtn_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            string filtro = SearchCriteraSb.Text;
+            List<Person> people = SearchInDBByCriteriaField(filtro);
+            RefreshPeopleList(people);
         }
     }
 }
