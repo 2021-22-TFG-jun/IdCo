@@ -6,9 +6,9 @@ namespace IdCo.Helpers
 {
     public class Settings
     {
-        public static string Resource = Application.Current.Properties["ResourceName"].ToString(); // Nombre de tu recurso
+        public static readonly string Resource = Application.Current.Properties["ResourceName"].ToString();
         public static readonly string FaceEndPoint = "https://"+ Resource + ".cognitiveservices.azure.com/face/v1.0";
-        public static string FaceApiKey = Application.Current.Properties["ResourceKey"].ToString(); // Clave de acceso al recurso
+        public static readonly string FaceApiKey = Application.Current.Properties["ResourceKey"].ToString();
 
         public static readonly string FaceGroupID = "conocidos";
         public static readonly string FaceGroupName = "Mis Personas Conocidas";
