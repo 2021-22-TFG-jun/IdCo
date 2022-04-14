@@ -34,7 +34,7 @@ namespace IdCo.Services.Face
 
     public class FaceService : IFaceService
     {
-        HttpClient httpClient;
+        readonly HttpClient httpClient;
         /// <summary>
         /// Inicializar el servicio.
         /// </summary>
@@ -63,17 +63,8 @@ namespace IdCo.Services.Face
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
-
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                var response = await httpResponseMessage.Content.ReadAsStringAsync();
-                Models.Face.Face[] faces = JsonConvert.DeserializeObject<Models.Face.Face[]>(response);
-                return faces;
-            }
-            else
-            {
-                return default(Models.Face.Face[]);
-            }
+            Models.Face.Face[] faces = await ConvertHttpResponseToFace(httpResponseMessage);
+            return faces;
         }
         /// <summary>
         /// Encontrar la coincidencia más cercana de un conjunto de rostros.
@@ -86,45 +77,59 @@ namespace IdCo.Services.Face
         public async Task<Models.Face.Face[]> Identify(Guid[] facesIds, string personGroupId = null, int maxNumOfCandidates = 1, double confidenceThreshold = 0.5)
         {
             if (personGroupId == null)
+            {
                 personGroupId = Settings.FaceGroupID;
+            }
+                
             var request = $"{Settings.FaceEndPoint}/identify";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
-
             requestMessage.RequestUri = new Uri(request);
 
-            string[] f_id = new string[facesIds.Length];
-            int i = 0;
-            foreach (Guid id in facesIds)
-            {
-                f_id[i] = id.ToString();
-                i = i + 1;
-            }
+            string[] f_id = ConvertGuidArrayToStringArray(facesIds);
 
             FaceRequestJson requestBody = new FaceRequestJson
             {
-                PersonGroupId = personGroupId,
-                FaceIds = f_id,
-                MaxNumOfCandidatesReturned = maxNumOfCandidates,
-                ConfidenceThreshold = confidenceThreshold
+                PersonGroupId = personGroupId, FaceIds = f_id, MaxNumOfCandidatesReturned = maxNumOfCandidates,ConfidenceThreshold = confidenceThreshold
             };
 
             var jsonBody = JsonConvert.SerializeObject(requestBody);
-
             requestMessage.Content = new StringContent(jsonBody);
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
-
+            Models.Face.Face[] faces = await ConvertHttpResponseToFace(httpResponseMessage);
+            return faces;
+        }
+        /// <summary>
+        /// Covertir de Guid[] a String[].
+        /// </summary>
+        /// <param name="guids"></param>
+        /// <returns></returns>
+        private string[] ConvertGuidArrayToStringArray(Guid[] guids)
+        {
+            string[] stringArray = new string[guids.Length];
+            int i = 0;
+            foreach (Guid id in guids)
+            {
+                stringArray[i] = id.ToString();
+                i = i + 1;
+            }
+            return stringArray;
+        }
+        /// <summary>
+        /// Deserializar la respuesta http y convertirlo en Face[].
+        /// </summary>
+        /// <param name="httpResponseMessage"></param>
+        /// <returns></returns>
+        private async Task<Models.Face.Face[]> ConvertHttpResponseToFace(HttpResponseMessage httpResponseMessage)
+        {
+            Models.Face.Face[] faces = default(Models.Face.Face[]);
             if (httpResponseMessage.IsSuccessStatusCode)
             {
                 var response = await httpResponseMessage.Content.ReadAsStringAsync();
-                Models.Face.Face[] faces = JsonConvert.DeserializeObject<Models.Face.Face[]>(response);
-                return faces;
+                faces = JsonConvert.DeserializeObject<Models.Face.Face[]>(response);  
             }
-            else
-            {
-                return default(Models.Face.Face[]);
-            }
+            return faces;
         }
     }
 }
