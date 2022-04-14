@@ -25,7 +25,8 @@
                              Content="Nombre" 
                              FontSize="15" 
                              TextColor="#2874A6" 
-                             IsChecked="True" 
+                             IsChecked="True"
+                             CheckedChanged="FiltersRadioBtn_CheckedChanged"
                              HorizontalOptions="Start" 
                              VerticalOptions="Start"/>
                 <RadioButton x:Name="LastNameRBtn" 
@@ -33,6 +34,7 @@
                              FontSize="15" 
                              TextColor="#2874A6" 
                              IsChecked="False" 
+                             CheckedChanged="FiltersRadioBtn_CheckedChanged"
                              HorizontalOptions="Center" 
                              VerticalOptions="Center"/>
             </StackLayout>
