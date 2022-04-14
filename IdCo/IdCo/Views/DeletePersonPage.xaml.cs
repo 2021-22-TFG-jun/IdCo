@@ -16,7 +16,7 @@ namespace IdCo.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DeletePersonPage : ContentPage
     {
-        Person person = null;
+        Person person;
         PersonGroupPersonService personGroupPersonService;
         public DeletePersonPage(Person person)
         {
