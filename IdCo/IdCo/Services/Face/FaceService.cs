@@ -59,7 +59,7 @@ namespace IdCo.Services.Face
 
             requestMessage.RequestUri = new Uri(request);
 
-            requestMessage.Content = new StreamContent(photo as Stream);
+            requestMessage.Content = new StreamContent(photo);
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
