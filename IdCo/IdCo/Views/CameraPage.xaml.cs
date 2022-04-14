@@ -10,7 +10,7 @@ namespace IdCo.Views
     public partial class CameraPage : ContentPage
     {
 
-        ICameraService camera;
+        readonly ICameraService camera;
 
         /// <summary>
         /// Inicializar el servicio de la camara
@@ -31,7 +31,10 @@ namespace IdCo.Views
             StoreCameraMediaOptions options = camera.StoreCameraOptions();
             MediaFile photo = await camera.TakePhoto(options);
 
-            await Navigation.PushAsync(new PersonPage(photo));
+            if(photo != null)
+            {
+                await Navigation.PushAsync(new PersonPage(photo));
+            }
         }
     }
 }
