@@ -26,7 +26,7 @@ namespace IdCo.Services.Face
 
     public class PersonGroupPersonService : IPersonGroupPersonService
     {
-        HttpClient httpClient;
+        readonly HttpClient httpClient;
         /// <summary>
         /// Inicializar el servicio.
         /// </summary>
@@ -46,9 +46,13 @@ namespace IdCo.Services.Face
         public async Task<Models.Face.Face> AddFace(string personId, Stream photo, string personGroupId = null,  string detectionModel = null)
         {
             if (personGroupId == null)
+            {
                 personGroupId = Settings.FaceGroupID;
+            }
             if (detectionModel == null)
+            {
                 detectionModel = "detection_01";
+            }
 
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons/{personId}/persistedFaces?detectionModel={detectionModel}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
@@ -59,19 +63,8 @@ namespace IdCo.Services.Face
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
-            
-
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                var response = await httpResponseMessage.Content.ReadAsStringAsync();
-                Models.Face.Face faceId = JsonConvert.DeserializeObject< Models.Face.Face>(response);
-
-                return faceId;
-            }
-            else
-            {
-                return default(Models.Face.Face);
-            }
+            Models.Face.Face face = await ConvertHttpResponseToFace(httpResponseMessage).ConfigureAwait(true);
+            return face;
         }
         /// <summary>
         /// Crear un Person en un PersonGroup.
@@ -83,7 +76,9 @@ namespace IdCo.Services.Face
         public async Task<Models.Face.Face> Create(string name, string userData, string personGroupId = null)
         {
             if (personGroupId == null)
+            {
                 personGroupId = Settings.FaceGroupID;
+            }
 
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
@@ -101,19 +96,8 @@ namespace IdCo.Services.Face
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
-
-            if (httpResponseMessage.IsSuccessStatusCode)
-            {
-                var response = await httpResponseMessage.Content.ReadAsStringAsync();
-                Models.Face.Face personId = JsonConvert.DeserializeObject<Models.Face.Face>(response);
-
-                return personId;
-            }
-            else
-            {
-                return default(Models.Face.Face);
-            }
-
+            Models.Face.Face face = await ConvertHttpResponseToFace(httpResponseMessage).ConfigureAwait(true);
+            return face;
         }
         /// <summary>
         /// Eliminar un Person de un PersonGroup.
@@ -124,7 +108,9 @@ namespace IdCo.Services.Face
         public async Task<string> Delete(string personId, string personGroupId = null)
         {
             if (personGroupId == null)
+            {
                 personGroupId = Settings.FaceGroupID;
+            }
 
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons/{personId}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, Settings.FaceEndPoint);
@@ -144,7 +130,9 @@ namespace IdCo.Services.Face
         public async Task<string> DeleteFace(string personId, string faceId, string personGroupId = null)
         {
             if (personGroupId == null)
+            {
                 personGroupId = Settings.FaceGroupID;
+            }
 
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{faceId}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, Settings.FaceEndPoint);
@@ -153,6 +141,21 @@ namespace IdCo.Services.Face
             HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
 
             return httpResponseMessage.StatusCode.ToString();
+        }
+        /// <summary>
+        /// Convertir una respuesta http en un objeto Face.
+        /// </summary>
+        /// <param name="httpResponseMessage"></param>
+        /// <returns></returns>
+        private async Task<Models.Face.Face> ConvertHttpResponseToFace(HttpResponseMessage httpResponseMessage)
+        {
+            Models.Face.Face face = default(Models.Face.Face);
+            if (httpResponseMessage.IsSuccessStatusCode)
+            {
+                var response = await httpResponseMessage.Content.ReadAsStringAsync();
+                face = JsonConvert.DeserializeObject<Models.Face.Face>(response);
+            }
+            return face;
         }
     }
 }
