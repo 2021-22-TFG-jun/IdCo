@@ -26,18 +26,21 @@ namespace IdCo.Services.Camera
         /// <param name="photoSize"> Tamaño de la imagen </param>
         /// <param name="directory"> Nombre del directorio de almacenamiento </param>
         /// <returns> Opcion de almacenamiento para una imagen </returns>
-        public StoreCameraMediaOptions StoreCameraOptions(string name = null, PhotoSize photoSize = PhotoSize.Small, string directory = null)
+        public StoreCameraMediaOptions StoreCameraOptions(string name, PhotoSize photoSize, string directory)
         {
-            if(name == null)
-            {
-                name = "photo_" + DateTime.Now.ToString();
-            }
-
-            if (directory == null)
-            {
-                directory = "IdCoGalery";
-            }
             return new StoreCameraMediaOptions { Name = name, PhotoSize = photoSize, Directory = directory};
+        }
+        /// <summary>
+        /// Almacenamiento de las imágenes por defecto.
+        /// </summary>
+        /// <returns></returns>
+        public StoreCameraMediaOptions StoreCameraOptions()
+        {
+            string name = "photo_" + DateTime.Now.ToString("dd-MM-yyyy HH.mm");
+            PhotoSize photoSize = PhotoSize.Small;
+            string directory = "IdCoGalery";
+
+            return StoreCameraOptions(name, photoSize, directory);
         }
 
         /// <summary>

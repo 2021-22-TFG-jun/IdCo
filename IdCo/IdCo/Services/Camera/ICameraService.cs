@@ -11,11 +11,8 @@ namespace IdCo.Services.Camera
         /// <summary>
         /// Forma de almacenamiento de las imagenes capturas.
         /// </summary>
-        /// <param name="name"> Nombre del fichero de la foto capturada </param>
-        /// <param name="photoSize">Tamaño de la foto: Small, Medium, Large, Full, Custom, MaxWidthHeight </param>
-        /// <param name="directory"> Directorio de la imagen </param>
         /// <returns></returns>
-        StoreCameraMediaOptions StoreCameraOptions(string name = null, PhotoSize photoSize = PhotoSize.Small, string directory = null);
+        StoreCameraMediaOptions StoreCameraOptions();
         /// <summary>
         /// Captura de imagen con la camara.
         /// </summary>
