@@ -67,6 +67,20 @@ namespace IdCo.Services.Face
             return faces;
         }
         /// <summary>
+        /// Método por defecto.
+        /// Coincidencia más cercana de un conjunto de rostros.
+        /// </summary>
+        /// <param name="facesIds"></param>
+        /// <returns></returns>
+        public async Task<Models.Face.Face[]> Identify(Guid[] facesIds)
+        {
+            string personGroupId = Settings.FaceGroupID;
+            int maxNumOfCandidates = 1;
+            double confidenceThreshold = 0.5;
+
+            return await Identify(facesIds, personGroupId, maxNumOfCandidates, confidenceThreshold);
+        }
+        /// <summary>
         /// Encontrar la coincidencia más cercana de un conjunto de rostros.
         /// </summary>
         /// <param name="facesIds"></param>
@@ -74,13 +88,8 @@ namespace IdCo.Services.Face
         /// <param name="maxNumOfCandidates"></param>
         /// <param name="confidenceThreshold"></param>
         /// <returns></returns>
-        public async Task<Models.Face.Face[]> Identify(Guid[] facesIds, string personGroupId = null, int maxNumOfCandidates = 1, double confidenceThreshold = 0.5)
+        public async Task<Models.Face.Face[]> Identify(Guid[] facesIds, string personGroupId, int maxNumOfCandidates, double confidenceThreshold)
         {
-            if (personGroupId == null)
-            {
-                personGroupId = Settings.FaceGroupID;
-            }
-                
             var request = $"{Settings.FaceEndPoint}/identify";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
             requestMessage.RequestUri = new Uri(request);
@@ -89,7 +98,10 @@ namespace IdCo.Services.Face
 
             FaceRequestJson requestBody = new FaceRequestJson
             {
-                PersonGroupId = personGroupId, FaceIds = f_id, MaxNumOfCandidatesReturned = maxNumOfCandidates,ConfidenceThreshold = confidenceThreshold
+                PersonGroupId = personGroupId, 
+                FaceIds = f_id, 
+                MaxNumOfCandidatesReturned = maxNumOfCandidates,
+                ConfidenceThreshold = confidenceThreshold
             };
 
             var jsonBody = JsonConvert.SerializeObject(requestBody);
