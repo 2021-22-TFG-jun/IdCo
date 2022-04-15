@@ -78,7 +78,7 @@ namespace IdCo.Services.Face
             int maxNumOfCandidates = 1;
             double confidenceThreshold = 0.5;
 
-            return await Identify(facesIds, personGroupId, maxNumOfCandidates, confidenceThreshold);
+            return await Identify(facesIds, personGroupId, maxNumOfCandidates, confidenceThreshold).ConfigureAwait(true);
         }
         /// <summary>
         /// Encontrar la coincidencia más cercana de un conjunto de rostros.
