@@ -36,6 +36,19 @@ namespace IdCo.Services.Face
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Settings.FaceApiKey);
         }
         /// <summary>
+        /// Sobrecarga de método. Añadir un Face a un person ya creado.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="photo"></param>
+        /// <returns></returns>
+        public async Task<Models.Face.Face> AddFace(string personId, Stream photo)
+        {
+            string personGroupId = Settings.FaceGroupID;
+            string detectionModel = "detection_01";
+
+            return await AddFace(personId, photo, personGroupId, detectionModel).ConfigureAwait(true);
+        }
+        /// <summary>
         /// Añadir un face a un Person ya creado.
         /// </summary>
         /// <param name="personId"></param>
@@ -43,17 +56,8 @@ namespace IdCo.Services.Face
         /// <param name="personGroupId"></param>
         /// <param name="detectionModel"></param>
         /// <returns></returns>
-        public async Task<Models.Face.Face> AddFace(string personId, Stream photo, string personGroupId = null,  string detectionModel = null)
+        public async Task<Models.Face.Face> AddFace(string personId, Stream photo, string personGroupId,  string detectionModel)
         {
-            if (personGroupId == null)
-            {
-                personGroupId = Settings.FaceGroupID;
-            }
-            if (detectionModel == null)
-            {
-                detectionModel = "detection_01";
-            }
-
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons/{personId}/persistedFaces?detectionModel={detectionModel}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
 
@@ -67,19 +71,25 @@ namespace IdCo.Services.Face
             return face;
         }
         /// <summary>
+        /// Sobrecarga de método. Crear un Person en un PersonGroup.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="userData"></param>
+        /// <returns></returns>
+        public async Task<Models.Face.Face> Create(string name, string userData)
+        {
+            string personGroupId = Settings.FaceGroupID;
+            return await Create(name, userData, personGroupId).ConfigureAwait(true);
+        }
+        /// <summary>
         /// Crear un Person en un PersonGroup.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="userData"></param>
         /// <param name="personGroupId"></param>
         /// <returns></returns>
-        public async Task<Models.Face.Face> Create(string name, string userData, string personGroupId = null)
+        public async Task<Models.Face.Face> Create(string name, string userData, string personGroupId)
         {
-            if (personGroupId == null)
-            {
-                personGroupId = Settings.FaceGroupID;
-            }
-
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
 
@@ -100,18 +110,23 @@ namespace IdCo.Services.Face
             return face;
         }
         /// <summary>
+        /// Sobrecarga de método. Eliminar un Person de un PersonGroup.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <returns></returns>
+        public async Task<string> Delete(string personId)
+        {
+            string personGroupId = Settings.FaceGroupID;
+            return await Delete(personId, personGroupId).ConfigureAwait(true);
+        }
+        /// <summary>
         /// Eliminar un Person de un PersonGroup.
         /// </summary>
         /// <param name="personId"></param>
         /// <param name="personGroupId"></param>
         /// <returns></returns>
-        public async Task<string> Delete(string personId, string personGroupId = null)
+        public async Task<string> Delete(string personId, string personGroupId)
         {
-            if (personGroupId == null)
-            {
-                personGroupId = Settings.FaceGroupID;
-            }
-
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons/{personId}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, Settings.FaceEndPoint);
 
@@ -121,19 +136,25 @@ namespace IdCo.Services.Face
             return httpResponseMessage.StatusCode.ToString();
         }
         /// <summary>
+        /// Sobrecarga de método. Eliminar un Face de un Person.
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="faceId"></param>
+        /// <returns></returns>
+        public async Task<string> DeleteFace(string personId, string faceId)
+        {
+            string personGroupId = Settings.FaceGroupID;
+            return await DeleteFace(personId, faceId, personGroupId).ConfigureAwait(true);
+        }
+        /// <summary>
         /// Eliminar un rostro de un Person.
         /// </summary>
         /// <param name="personId"></param>
         /// <param name="faceId"></param>
         /// <param name="personGroupId"></param>
         /// <returns></returns>
-        public async Task<string> DeleteFace(string personId, string faceId, string personGroupId = null)
+        public async Task<string> DeleteFace(string personId, string faceId, string personGroupId)
         {
-            if (personGroupId == null)
-            {
-                personGroupId = Settings.FaceGroupID;
-            }
-
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/persons/{personId}/persistedFaces/{faceId}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, Settings.FaceEndPoint);
 
