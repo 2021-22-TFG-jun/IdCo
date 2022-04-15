@@ -32,7 +32,7 @@ namespace IdCo.Services.Face
     /// </summary>
     public class PersonGroupService : IPersonGroupService
     {
-        HttpClient httpClient;
+        readonly HttpClient httpClient;
         /// <summary>
         /// Inicialización del cliente Https y asignación de la clave del API.
         /// </summary>
@@ -42,6 +42,19 @@ namespace IdCo.Services.Face
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Settings.FaceApiKey);
         }
         /// <summary>
+        /// Sobrecarga de método. Crear un PersonGroup.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> Create()
+        {
+            string personGroupId = Settings.FaceGroupID;
+            string name = Settings.FaceGroupName;
+            string userData = Settings.FaceGroupDescription;
+            string recognitionModel = "recognition_03";
+
+            return await Create(personGroupId, name, userData, recognitionModel).ConfigureAwait(true);
+        }
+        /// <summary>
         /// Crear un PersonGroup
         /// </summary>
         /// <param name="personGroupId">Id del PersonGroup</param>
@@ -49,17 +62,8 @@ namespace IdCo.Services.Face
         /// <param name="userData">Descripcion del PersonGroup</param>
         /// <param name="recognitionModel">Modelo de reconocimiento</param>
         /// <returns>Código del estado de la respuesta http</returns>
-        public async Task<string> Create(string personGroupId = null, string name = null, string userData = null, string recognitionModel = null)
+        public async Task<string> Create(string personGroupId, string name, string userData, string recognitionModel)
         {
-            if(personGroupId == null)
-                personGroupId = Settings.FaceGroupID;
-            if (name == null)
-                name = Settings.FaceGroupName;
-            if (userData == null)
-                userData = Settings.FaceGroupDescription;
-            if (recognitionModel == null)
-                recognitionModel = "recognition_03";
-
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Put, Settings.FaceEndPoint);
 
@@ -81,15 +85,21 @@ namespace IdCo.Services.Face
             return httpResponseMessage.StatusCode.ToString();
         }
         /// <summary>
+        /// Sobrecarga de método. Eliminar un PersonGroup.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> Delete()
+        {
+            string personGroupId = Settings.FaceGroupID;
+            return await Delete(personGroupId).ConfigureAwait(true);
+        }
+        /// <summary>
         /// Eliminar un PersonGroup
         /// </summary>
         /// <param name="personGroupId">Id del PersonGroup</param>
         /// <returns>Código del estado de la respuesta http</returns>
-        public async Task<string> Delete(string personGroupId = null)
+        public async Task<string> Delete(string personGroupId)
         {
-            if (personGroupId == null)
-                personGroupId = Settings.FaceGroupID;
-
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}";
             var requestMessage = new HttpRequestMessage(HttpMethod.Delete, Settings.FaceEndPoint);
             requestMessage.RequestUri = new Uri(request);
@@ -99,15 +109,21 @@ namespace IdCo.Services.Face
             return httpResponseMessage.StatusCode.ToString();
         }
         /// <summary>
+        /// Sobrecarga de método. Entrenar un PersonGroup.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<string> Train()
+        {
+            string personGroupId = Settings.FaceGroupID;
+            return await Train(personGroupId).ConfigureAwait(true);
+        }
+        /// <summary>
         /// Entrenar un PersonGroup
         /// </summary>
         /// <param name="personGroupId">Id Del PersonGroup</param>
         /// <returns>Código del estado de la respuesta http</returns>
-        public async Task<string> Train(string personGroupId = null)
+        public async Task<string> Train(string personGroupId)
         {
-            if (personGroupId == null)
-                personGroupId = Settings.FaceGroupID;
-
             var request = $"{Settings.FaceEndPoint}/persongroups/{personGroupId}/train";
             var requestMessage = new HttpRequestMessage(HttpMethod.Post, Settings.FaceEndPoint);
             requestMessage.RequestUri = new Uri(request);
