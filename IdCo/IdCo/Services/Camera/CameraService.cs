@@ -54,7 +54,7 @@ namespace IdCo.Services.Camera
 
             if (!CrossMedia.Current.IsCameraAvailable)
             {
-                throw new Exception("Error: La cámara no está disponible.");
+                throw new ArgumentNullException("Error: La cámara no está disponible.");
             }
 
             photo = await CrossMedia.Current.TakePhotoAsync(storeOptions);
