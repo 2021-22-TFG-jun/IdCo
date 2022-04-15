@@ -29,7 +29,17 @@ namespace IdCo.Views
         private async void CameraBtn_Clicked(object sender, EventArgs e)
         {
             StoreCameraMediaOptions options = camera.StoreCameraOptions();
-            MediaFile photo = await camera.TakePhoto(options);
+            MediaFile photo = null;
+            try
+            {
+                photo = await camera.TakePhoto(options);
+            }catch(ArgumentNullException ex)
+            {
+                await DisplayAlert(" ", "La cámara no se encuentra disponible", "OK");
+#if DEBUG
+                Console.WriteLine($"Error: {ex.Message} - {ex.StackTrace}");
+#endif
+            }
 
             if(photo != null)
             {
