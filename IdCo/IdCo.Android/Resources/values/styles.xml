@@ -16,4 +16,12 @@
     <item name="colorAccent">@color/colorAccent</item>
     <item name="backgroundColor">@color/launcher_background</item>
   </style>
+  <!--Nuevo estilo para el inicio de la aplicacion-->
+  <style name="MyTheme.Start" parent ="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/start_screen_view</item>
+    <item name="android:windowFullscreen">true</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowActionBar">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+  </style>
 </resources>
