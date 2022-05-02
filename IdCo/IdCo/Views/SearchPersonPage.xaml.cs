@@ -26,7 +26,10 @@ namespace IdCo.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            peopleView = App.Database.SearchAllPersons();
+            if (App.Database != null)
+            {
+                peopleView = App.Database.SearchAllPersons();
+            }
             RefreshPeopleList(peopleView);
         }
         /// <summary>
