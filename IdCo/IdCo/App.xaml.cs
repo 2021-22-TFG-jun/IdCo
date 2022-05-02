@@ -19,12 +19,16 @@ namespace IdCo
         {
             get
             {
-                if (database == null)
+                if (!string.IsNullOrEmpty(Settings.BDName))
                 {
-                    database = new Database(Settings.BDName);
-                    
+
+                    if (database == null)
+                    {
+                        database = new Database(Settings.BDName);
+
+                    }
+                    database.CreateTable();
                 }
-                database.CreateTable();
                 return database;
             }
         }
