@@ -28,7 +28,15 @@ using Android.App;
 // Add some common permissions, these can be removed if not needed
 [assembly: UsesPermission(Android.Manifest.Permission.Internet)]
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
+[assembly: UsesPermission(Android.Manifest.Permission.ReadExternalStorage)]
 
 // Permisos para la camara
 [assembly: UsesFeature("android.hardware.camera", Required = true)]
 [assembly: UsesFeature("android.hardware.camera.autofocus", Required = true)]
+
+//// Controlar el debug
+//#if DEBUG
+//[assembly: Application(Debuggable = true)]
+//#else
+//[assembly: Application(Debuggable = false)]
+//#endif
