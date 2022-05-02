@@ -13,7 +13,7 @@ namespace IdCo.Views
     public partial class StartPage : ContentPage
     {
         PersonGroupService personGroupService;
-        string loginFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Login.txt");
+        readonly string loginFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Login.txt");
         public StartPage()
         {
             InitializeComponent();
@@ -24,9 +24,6 @@ namespace IdCo.Views
 #endif
             if (!Application.Current.Properties.ContainsKey("ResourceName") || !Application.Current.Properties.ContainsKey("ResourceKey"))
             {
-                //lbl_start.IsVisible = false;
-                //LoginDataPanel.IsVisible = true;
-                //return;
                 if (!ExistLoginDataFile())
                 {
                     lbl_start.IsVisible = false;
