@@ -6,6 +6,7 @@ using IdCo.Services.Face;
 using System.Threading.Tasks;
 using System.IO;
 using IdCo.Helpers;
+using Xamarin.Essentials;
 
 namespace IdCo.Views
 {
@@ -134,22 +135,123 @@ namespace IdCo.Views
 
             if (flag1 && flag2)
             {
-                CreateLoginDataFile();
-                personGroupService = new PersonGroupService();
-                string status = await personGroupService.Create();
-                if (string.Equals(status, "OK") || string.Equals(status, "Conflict"))
+                bool access = await ResourceAccess().ConfigureAwait(true);
+                if (access)
                 {
-                    lbl_start.IsVisible = true;
+                    CreateLoginDataFile();
                     LoginDataPanel.IsVisible = false;
-                }
-                else if (string.Equals(status, "Unauthorized"))
-                {
-                    await DisplayAlert("Error", "La clave de subscripción es invalida o esta bloqueada. Contacte con su proveedor.", "OK");
-                }else
-                {
-                    await DisplayAlert("Error", "Se ha producido un error. Contacte con su proveedor.", "OK");
+                    ImportDataPanel.IsVisible = true;
+                    ImportDBFrame.IsVisible = true;
                 }
             }
+        }
+        /// <summary>
+        /// Determinar si las claves de acceso con correctas
+        /// </summary>
+        /// <returns></returns>
+        private async Task<bool> ResourceAccess()
+        {
+            personGroupService = new PersonGroupService();
+            string status = await personGroupService.Create();
+            if (string.Equals(status, "OK") || string.Equals(status, "Conflict"))
+            {
+                return true;
+            }
+            else if (string.Equals(status, "Unauthorized"))
+            {
+                await DisplayAlert("Error", "La clave de subscripción es invalida o esta bloqueada. Contacte con su proveedor.", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Error", "Se ha producido un error. Contacte con su proveedor.", "OK");
+            }
+            return false;
+        }
+        /// <summary>
+        /// Comprobar si ya existe una base de datos creada.
+        /// </summary>
+        /// <param name="ruta"></param>
+        /// <returns></returns>
+        private bool IsDataBaseImported(string ruta)
+        {
+            if (File.Exists(ruta))
+            {
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Seleccionar un archivo de base de datos .db3 e importarlo a un directorio
+        /// interno de la aplicación
+        /// </summary>
+        /// <param name="ruta"></param>
+        /// <returns></returns>
+        private async Task<bool> ImportDataBase(string ruta)
+        {
+            try
+            {
+                var file = await FilePicker.PickAsync();
+
+                if (file != null)
+                {
+                    if (file.FileName.EndsWith("db3", StringComparison.OrdinalIgnoreCase))
+                    {
+                        File.Copy(file.FullPath, ruta);
+                        Settings.BDName = ruta;
+                        return true;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Boton para controlar el evento de importación de base de datos.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void ImportBtn_Clicked(object sender, EventArgs e)
+        {
+            string ruta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "database.db3");
+
+            if (IsDataBaseImported(ruta))
+            {
+                await DisplayAlert("", "Ya existe una base datos creada, se omitira este paso.", "OK");
+            }
+            else
+            {
+                bool checkImport = await ImportDataBase(ruta).ConfigureAwait(true);
+                if (!checkImport)
+                {
+                    await DisplayAlert("", "Se a producido un error al importar la base de datos. Vuelve a intentarlo.", "Ok");
+                }
+                else
+                {
+                    lbl_start.IsVisible = true;
+                    ImportDataPanel.IsVisible = false;
+                    ImportDBFrame.IsVisible = false;
+                }
+            }
+
+        }
+        /// <summary>
+        /// Controlar el evento de no importación de base de datos.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FinishBtn_Clicked(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(Settings.BDName))
+            {
+                Settings.BDName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "People.db3");
+            }
+
+            lbl_start.IsVisible = true;
+            ImportDataPanel.IsVisible = false;
+            ImportDBFrame.IsVisible = false;
         }
     }
 }
