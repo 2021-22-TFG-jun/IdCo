@@ -15,7 +15,7 @@
                 <Frame BorderColor="#2874A6" BackgroundColor="#EBF5FB">
                     <StackLayout>
                         <Label x:Name="lbl_login"
-                               Text="Inicia sesión en el recurso para continuar"
+                               Text="Paso 1: Inicia sesión en el recurso."
                                VerticalOptions="CenterAndExpand" 
                                HorizontalOptions="CenterAndExpand" 
                                FontSize="26"
@@ -32,6 +32,7 @@
                                TextColor="#2874A6"
                                FontSize="20"
                                VerticalOptions="CenterAndExpand"/>
+                        
                         <Button x:Name="NextBtn"
                                 Text="Continuar"
                                 TextColor="#2874A6"
@@ -43,6 +44,36 @@
                     </StackLayout>
                 </Frame>
             </StackLayout>
+            <StackLayout x:Name="ImportDataPanel" VerticalOptions="CenterAndExpand" Padding="20,0,20,0" IsVisible="False">
+                <Frame x:Name="ImportDBFrame" BorderColor="#2874A6" BackgroundColor="#EBF5FB" IsVisible="False">
+                    <StackLayout>
+                        <Label x:Name="lbl_impotarBD"
+                               Text="Paso opcional: ¿Quieres importar una Base de Datos?"
+                               VerticalOptions="CenterAndExpand" 
+                               HorizontalOptions="CenterAndExpand" 
+                               FontSize="20"
+                               TextColor="#2874A6"
+                               HorizontalTextAlignment="Center"/>
+                        <Button x:Name="ImportBtn"
+                                Text="Si"
+                                TextColor="#2874A6"
+                                Clicked="ImportBtn_Clicked"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="CenterAndExpand"
+                                BackgroundColor="#EBF5FB"
+                                BorderColor="#EBF5FB"/>
+                        <Button x:Name="FinishBtn"
+                                Text="No"
+                                TextColor="#2874A6"
+                                Clicked="FinishBtn_Clicked"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="CenterAndExpand"
+                                BackgroundColor="#EBF5FB"
+                                BorderColor="#EBF5FB"/>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
