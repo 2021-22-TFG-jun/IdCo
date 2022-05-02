@@ -13,7 +13,6 @@ namespace IdCo.Helpers
         public static readonly string FaceGroupID = "conocidos";
         public static readonly string FaceGroupName = "Mis Personas Conocidas";
         public static readonly string FaceGroupDescription = "Agrupación de los rostros de mis personas conocidas";
-
-        public static readonly string BDName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PersonDB.db3");
+        public static string BDName { get; set; }
     }
 }
