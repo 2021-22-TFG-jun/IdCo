@@ -70,10 +70,26 @@
                                 HorizontalOptions="CenterAndExpand"
                                 BackgroundColor="#EBF5FB"
                                 BorderColor="#EBF5FB"/>
+                        
                     </StackLayout>
                 </Frame>
             </StackLayout>
-            
+            <StackLayout x:Name="ActivityIndicatorPanel" VerticalOptions="CenterAndExpand" Padding="20,0,20,0" IsVisible="False" Opacity=".8">
+                <Label x:Name="InfoLbl" 
+                       Text="Sincronizando Base de Datos con el API..." 
+                       TextColor="#2874A6" 
+                       VerticalTextAlignment="Center"
+                       FontSize="16" 
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center"/>
+                <ActivityIndicator x:Name="activityIndicator" 
+                                   Color="#E59866" 
+                                   BackgroundColor="#B3E5FC"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   IsVisible="False" 
+                                   IsRunning="False"/>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
