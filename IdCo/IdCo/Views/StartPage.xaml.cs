@@ -264,7 +264,7 @@ namespace IdCo.Views
         /// <summary>
         /// Sincronizar la base de datos con el servicio API.
         /// </summary>
-        private async void SyncDBwithAPI()
+        private async Task SyncDBwithAPI()
         {
             List<Person> people = App.Database.SearchAllPersons();
             faceService = new FaceService();
