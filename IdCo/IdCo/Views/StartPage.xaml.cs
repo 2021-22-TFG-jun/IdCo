@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.IO;
 using IdCo.Helpers;
 using Xamarin.Essentials;
+using System.Collections.Generic;
+using IdCo.Models.Person;
+using IdCo.Models.Face;
 
 namespace IdCo.Views
 {
@@ -14,6 +17,9 @@ namespace IdCo.Views
     public partial class StartPage : ContentPage
     {
         PersonGroupService personGroupService;
+        PersonGroupPersonService personGroupPersonService;
+        FaceService faceService;
+
         readonly string loginFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Login.txt");
         public StartPage()
         {
@@ -230,12 +236,59 @@ namespace IdCo.Views
                 }
                 else
                 {
-                    lbl_start.IsVisible = true;
-                    ImportDataPanel.IsVisible = false;
-                    ImportDBFrame.IsVisible = false;
+                    ShowActivityIndicator(false);
+                    SyncDBwithAPI();
+                    ShowActivityIndicator(true);
                 }
             }
+        }
 
+        private void ShowActivityIndicator(bool finish)
+        {
+            ImportDataPanel.IsVisible = false;
+            ImportDBFrame.IsVisible = false;
+            if (!finish)
+            {
+                ActivityIndicatorPanel.IsVisible = true;
+                activityIndicator.IsVisible = true;
+                activityIndicator.IsRunning = true;
+            }
+            else
+            {
+                ActivityIndicatorPanel.IsVisible = false;
+                activityIndicator.IsVisible = false;
+                activityIndicator.IsRunning = false;
+                lbl_start.IsVisible = true;
+            }
+        }
+        /// <summary>
+        /// Sincronizar la base de datos con el servicio API.
+        /// </summary>
+        private async void SyncDBwithAPI()
+        {
+            List<Person> people = App.Database.SearchAllPersons();
+            faceService = new FaceService();
+            personGroupPersonService = new PersonGroupPersonService();
+            foreach(Person person in people)
+            {
+                Face[] detectFaces = await faceService.Detect(true, new MemoryStream(person.Photo));
+                System.Threading.Thread.Sleep(3000);
+                if (detectFaces.Length.Equals(1))
+                {
+                    var personId = await personGroupPersonService.Create(person.Name, person.LastName);
+                    System.Threading.Thread.Sleep(3000);
+                    var faceId = await personGroupPersonService.AddFace(personId.PersonId.ToString(), new MemoryStream(person.Photo));
+                    System.Threading.Thread.Sleep(3000);
+                    person.PersonId = personId.PersonId.ToString();
+                    person.FaceId = faceId.PersistedFaceId.ToString();
+                    App.Database.UpdatePerson(person);
+                }
+                else
+                {
+                    App.Database.RemovePerson(person);
+                } 
+            }
+            await personGroupService.Train().ConfigureAwait(true);
         }
         /// <summary>
         /// Controlar el evento de no importación de base de datos.
