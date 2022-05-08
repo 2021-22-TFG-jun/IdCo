@@ -33,6 +33,12 @@ namespace IdCo.Models.Database
         /// <returns></returns>
         int RemovePerson(Person.Person person);
         /// <summary>
+        /// Actualizar una persona de la base de datos.
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        int UpdatePerson(Person.Person person);
+        /// <summary>
         /// Buscar una persona en funcion de su Id.
         /// </summary>
         /// <param name="id"></param>
