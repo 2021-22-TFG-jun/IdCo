@@ -61,6 +61,16 @@ namespace IdCo.Models.Database
             return num.Result;
         }
         /// <summary>
+        /// Actualizar un objeto persona em la base de datos.
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
+        public int UpdatePerson(Person.Person person)
+        {
+            Task<int> num = database.UpdateAsync(person);
+            return num.Result;
+        }
+        /// <summary>
         /// Buscar un objeto Person por su id.
         /// </summary>
         /// <param name="id">Id del objeto Person a buscar</param>
