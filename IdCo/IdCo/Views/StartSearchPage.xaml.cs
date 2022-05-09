@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using IdCo.Helpers;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace IdCo.Views
@@ -17,7 +18,14 @@ namespace IdCo.Views
         /// <param name="e"></param>
         private async void SearchBtn_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new SearchPersonPage());
+            if (!CheckSettings.CorrectDBAccess || !CheckSettings.CorrectResourceAccess)
+            {
+                await DisplayAlert("Acceso denegado", "Complete la configuración inicial para acceder a este servicio", "OK");
+            }
+            else
+            {
+                await Navigation.PushAsync(new SearchPersonPage());
+            }
         }
     }
 }
