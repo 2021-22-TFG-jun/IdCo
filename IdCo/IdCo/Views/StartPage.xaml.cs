@@ -161,6 +161,7 @@ namespace IdCo.Views
             string status = await personGroupService.Create();
             if (string.Equals(status, "OK") || string.Equals(status, "Conflict"))
             {
+                CheckSettings.CorrectResourceAccess = true;
                 return true;
             }
             else if (string.Equals(status, "Unauthorized"))
@@ -226,6 +227,7 @@ namespace IdCo.Views
             if (IsDataBaseImported(ruta))
             {
                 await DisplayAlert("", "Ya existe una base datos creada, se omitira este paso.", "OK");
+                CheckSettings.CorrectDBAccess = true;
             }
             else
             {
@@ -237,12 +239,16 @@ namespace IdCo.Views
                 else
                 {
                     ShowActivityIndicator(false);
-                    SyncDBwithAPI();
+                    await SyncDBwithAPI().ConfigureAwait(true);
+                    CheckSettings.CorrectDBAccess = true;
                     ShowActivityIndicator(true);
                 }
             }
         }
-
+        /// <summary>
+        /// Mostrar el indicados de carga de actividad
+        /// </summary>
+        /// <param name="finish"></param>
         private void ShowActivityIndicator(bool finish)
         {
             ImportDataPanel.IsVisible = false;
@@ -305,6 +311,7 @@ namespace IdCo.Views
             lbl_start.IsVisible = true;
             ImportDataPanel.IsVisible = false;
             ImportDBFrame.IsVisible = false;
+            CheckSettings.CorrectDBAccess = true;
         }
     }
 }
