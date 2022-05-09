@@ -28,6 +28,7 @@ namespace IdCo
 
                     }
                     database.CreateTable();
+                    CheckSettings.CorrectDBAccess = true;
                 }
                 return database;
             }
