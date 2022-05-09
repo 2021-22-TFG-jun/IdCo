@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using IdCo.Services.Camera;
 using Plugin.Media.Abstractions;
+using IdCo.Helpers;
 
 namespace IdCo.Views
 {
@@ -28,6 +29,12 @@ namespace IdCo.Views
         /// <param name="e"></param>
         private async void CameraBtn_Clicked(object sender, EventArgs e)
         {
+            if (!CheckSettings.CorrectDBAccess || !CheckSettings.CorrectResourceAccess)
+            {
+                await DisplayAlert("Acceso denegado", "Complete la configuración inicial para acceder a este servicio", "OK");
+                return;
+            }
+            
             StoreCameraMediaOptions options = camera.StoreCameraOptions();
             MediaFile photo = null;
             try
