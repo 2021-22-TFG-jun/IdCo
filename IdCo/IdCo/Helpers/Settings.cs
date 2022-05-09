@@ -15,4 +15,10 @@ namespace IdCo.Helpers
         public static readonly string FaceGroupDescription = "Agrupación de los rostros de mis personas conocidas";
         public static string BDName { get; set; }
     }
+
+    public class CheckSettings
+    {
+        public static bool CorrectResourceAccess = false;
+        public static bool CorrectDBAccess = false;
+    }
 }
