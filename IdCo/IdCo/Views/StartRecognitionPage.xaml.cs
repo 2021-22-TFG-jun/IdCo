@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdCo.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,15 @@ namespace IdCo.Views
 
         private async void PlayBtn_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new RecognitionPage());
+            if (!CheckSettings.CorrectDBAccess || !CheckSettings.CorrectResourceAccess)
+            {
+                await DisplayAlert("Acceso denegado", "Complete la configuración inicial para acceder a este servicio","OK");
+            }
+            else
+            {
+                await Navigation.PushAsync(new RecognitionPage());
+            }
+            
         }
     }
 }
