@@ -48,7 +48,7 @@
                 <Frame x:Name="ImportDBFrame" BorderColor="#2874A6" BackgroundColor="#EBF5FB" IsVisible="False">
                     <StackLayout>
                         <Label x:Name="lbl_impotarBD"
-                               Text="Paso opcional: ¿Quieres importar una Base de Datos?"
+                               Text="Paso 2: ¿Quieres importar una Base de Datos?"
                                VerticalOptions="CenterAndExpand" 
                                HorizontalOptions="CenterAndExpand" 
                                FontSize="20"
