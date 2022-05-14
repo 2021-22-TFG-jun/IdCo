@@ -29,7 +29,11 @@ namespace IdCo.Views
             Application.Current.Properties.Remove("ResourceName");
             Application.Current.Properties.Remove("ResourceKey");
 #endif
-            if (!Application.Current.Properties.ContainsKey("ResourceName") || !Application.Current.Properties.ContainsKey("ResourceKey"))
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (!Application.Current.Properties.ContainsKey("ResourceName") || !Application.Current.Properties.ContainsKey("ResourceKey") || !CheckSettings.CorrectResourceAccess)
             {
                 if (!ExistLoginDataFile())
                 {
@@ -42,9 +46,18 @@ namespace IdCo.Views
                     ReadLoginDataFile();
                 }
             }
+            if (!IsDataBaseImported())
+            {
+                LoginDataPanel.IsVisible = false;
+                ImportDataPanel.IsVisible = true;
+                ImportDBFrame.IsVisible = true;
+                return;
+            }
             lbl_start.IsVisible = true;
             LoginDataPanel.IsVisible = false;
+            ImportDataPanel.IsVisible = false;
         }
+
         /// <summary>
         /// Comprobar si el campo del nombre del recurso esta completado.
         /// </summary>
@@ -90,10 +103,14 @@ namespace IdCo.Views
         /// <summary>
         /// Crear un fichero para el almacenamiento de los datos de inicio de sesion en el recurso.
         /// </summary>
-        private void CreateLoginDataFile()
+        private async void CreateLoginDataFile()
         {
-            string resourceName = (string)Application.Current.Properties["ResourceName"];
-            string resourceKey = (string)Application.Current.Properties["ResourceKey"];
+            string resourceKey = ResourceKeyEntry.Text;
+            string resourceName = ResourceNameEntry.Text;
+            Application.Current.Properties["ResourceKey"] = resourceKey;
+            Application.Current.Properties["ResourceName"] = resourceName;
+            await Application.Current.SavePropertiesAsync().ConfigureAwait(true);
+
             if (!ExistLoginDataFile())
             {
                 StreamWriter writer = new StreamWriter(loginFilePath);
@@ -112,7 +129,9 @@ namespace IdCo.Views
                 StreamReader reader = new StreamReader(loginFilePath);
                 Application.Current.Properties["ResourceName"] = reader.ReadLine();
                 Application.Current.Properties["ResourceKey"] = reader.ReadLine();
+
                 reader.Close();
+                CheckSettings.CorrectResourceAccess = true;
             }
         }
         /// <summary>
@@ -121,7 +140,6 @@ namespace IdCo.Views
         /// <returns></returns>
         private bool ExistLoginDataFile()
         {
-            
             if (!File.Exists(loginFilePath))
             {
                 return false;
@@ -164,6 +182,10 @@ namespace IdCo.Views
                 CheckSettings.CorrectResourceAccess = true;
                 return true;
             }
+            else if (string.Equals(status, "UnknownHostException"))
+            {
+                await DisplayAlert("Error", "Compruebe el nombre del recurso introducido. Es necesario reiniciar la aplicación para continuar.", "OK");
+            }
             else if (string.Equals(status, "Unauthorized"))
             {
                 await DisplayAlert("Error", "La clave de subscripción es invalida o esta bloqueada. Contacte con su proveedor.", "OK");
@@ -179,10 +201,16 @@ namespace IdCo.Views
         /// </summary>
         /// <param name="ruta"></param>
         /// <returns></returns>
-        private bool IsDataBaseImported(string ruta)
+        private bool IsDataBaseImported(string ruta = null)
         {
+            if(ruta == null)
+            {
+                ruta = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "database.db3");
+            }
             if (File.Exists(ruta))
             {
+                Settings.BDName = ruta;
+                CheckSettings.CorrectDBAccess = true;
                 return true;
             }
             return false;
@@ -305,12 +333,8 @@ namespace IdCo.Views
         {
             if (string.IsNullOrEmpty(Settings.BDName))
             {
-                Settings.BDName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "People.db3");
+                Settings.BDName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "database.db3");
             }
-
-            lbl_start.IsVisible = true;
-            ImportDataPanel.IsVisible = false;
-            ImportDBFrame.IsVisible = false;
             CheckSettings.CorrectDBAccess = true;
         }
     }
