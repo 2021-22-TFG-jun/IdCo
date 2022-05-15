@@ -55,7 +55,10 @@ namespace IdCo.Views
                             foreach(var candidato in rostro.Candidates)
                             {
                                 Person person = App.Database.SearchPersonByPersonId(candidato.PersonId.ToString());
-                                await TextToSpeech.SpeakAsync(person.Name + " " + person.LastName);
+                                if(person != null)
+                                {
+                                    await TextToSpeech.SpeakAsync(person.Name + " " + person.LastName);
+                                }
                             }
                         }
                     }
