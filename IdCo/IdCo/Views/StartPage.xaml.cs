@@ -336,6 +336,9 @@ namespace IdCo.Views
                 Settings.BDName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "database.db3");
             }
             CheckSettings.CorrectDBAccess = true;
+            lbl_start.IsVisible = true;
+            LoginDataPanel.IsVisible = false;
+            ImportDataPanel.IsVisible = false;
         }
     }
 }
