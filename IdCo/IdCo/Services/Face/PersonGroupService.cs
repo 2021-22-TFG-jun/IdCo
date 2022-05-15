@@ -79,10 +79,15 @@ namespace IdCo.Services.Face
 
             requestMessage.Content = new StringContent(jsonBody as string);
             requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
-
-            return httpResponseMessage.StatusCode.ToString();
+            try
+            {
+                HttpResponseMessage httpResponseMessage = await httpClient.SendAsync(requestMessage);
+                return httpResponseMessage.StatusCode.ToString();
+            }
+            catch(Exception)
+            {
+                return "UnknownHostException";
+            }
         }
         /// <summary>
         /// Sobrecarga de método. Eliminar un PersonGroup.
