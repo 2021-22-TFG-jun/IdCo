@@ -153,7 +153,7 @@ namespace IdCo.Views
 
                 while (!procesado && i < 3)
                 {
-                    System.Threading.Thread.Sleep(30000); // dar tiempo para procesar la imagen
+                    System.Threading.Thread.Sleep(15000); // dar tiempo para procesar la imagen
                     i = i + 1;
                 }
             }
